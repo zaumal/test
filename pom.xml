@@ -33,5 +33,6 @@
 		<module>test-spring</module>
 		<module>test-uml</module>
 		<module>test-cglib</module>
+		<module>test-springboot</module>
 	</modules>
 </project>
