@@ -37,5 +37,7 @@
 		<module>test-springmvc.annotation</module>
 		<module>test-servletContainerInitializer</module>
 		<module>test-springmvc.annotation.nowebxml</module>
+		<module>test-springmvc.webApplicationInitializer</module>
+		<module>test-springframework</module>
 	</modules>
 </project>
