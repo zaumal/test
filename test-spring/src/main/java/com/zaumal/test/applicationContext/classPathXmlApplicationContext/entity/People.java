@@ -1,8 +1,12 @@
-package com.zaumal.test.xml.classPathXmlApplicationContext.entity;
+package com.zaumal.test.applicationContext.classPathXmlApplicationContext.entity;
 
 public class People {
 	private String name;
 	private int age;
+	
+	public People() {
+		System.out.println("People 构造方法...");
+	}
 	public String getName() {
 		return name;
 	}

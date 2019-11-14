@@ -1,10 +1,10 @@
-package com.zaumal.test.xml.annotationConfigApplicationContext;
+package com.zaumal.test.applicationContext.annotationConfigApplicationContext;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.zaumal.test.xml.annotationConfigApplicationContext.conf.AppConfig;
-import com.zaumal.test.xml.annotationConfigApplicationContext.entity.People;
+import com.zaumal.test.applicationContext.annotationConfigApplicationContext.conf.AppConfig;
+import com.zaumal.test.applicationContext.annotationConfigApplicationContext.entity.People;
 
 public class ACACTestMain {
 	public static void main(String[] args) {

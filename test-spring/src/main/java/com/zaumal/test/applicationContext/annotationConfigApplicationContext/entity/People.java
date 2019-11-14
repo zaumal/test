@@ -1,4 +1,4 @@
-package com.zaumal.test.xml.annotationConfigApplicationContext.entity;
+package com.zaumal.test.applicationContext.annotationConfigApplicationContext.entity;
 
 public class People {
 	private String name;

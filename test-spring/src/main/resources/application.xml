@@ -8,7 +8,7 @@
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<bean class="com.zaumal.test.xml.classPathXmlApplicationContext.entity.People">
+	<bean class="com.zaumal.test.applicationContext.classPathXmlApplicationContext.entity.People">
 		<property name="name">
 			<value>zhangs</value>
 		</property>

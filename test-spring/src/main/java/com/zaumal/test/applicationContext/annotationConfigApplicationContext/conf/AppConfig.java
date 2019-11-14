@@ -1,9 +1,9 @@
-package com.zaumal.test.xml.annotationConfigApplicationContext.conf;
+package com.zaumal.test.applicationContext.annotationConfigApplicationContext.conf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.zaumal.test.xml.annotationConfigApplicationContext.entity.People;
+import com.zaumal.test.applicationContext.annotationConfigApplicationContext.entity.People;
 
 @Configuration
 public class AppConfig {
