@@ -28,11 +28,12 @@
 		<module>test-linkedtable</module>
 		<module>general</module>
 		<module>test1.7</module>
-		<module>test-springmvc</module>
+		<module>test-springmvc.xml</module>
 		<module>test1.8</module>
 		<module>test-spring</module>
 		<module>test-uml</module>
 		<module>test-cglib</module>
 		<module>test-springboot</module>
+		<module>test-springmvc.annotation</module>
 	</modules>
 </project>
