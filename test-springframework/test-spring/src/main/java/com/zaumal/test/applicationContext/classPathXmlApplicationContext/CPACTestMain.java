@@ -6,6 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.zaumal.test.applicationContext.classPathXmlApplicationContext.entity.People;
 
 public class CPACTestMain {
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		ApplicationContext ac = new ClassPathXmlApplicationContext("application.xml");
 		System.out.println("=================");
