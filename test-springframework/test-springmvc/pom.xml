@@ -33,5 +33,6 @@
 		<module>test-springmvc.annotation.nowebxml</module>
 		<module>test-springmvc.annotation</module>
 		<module>test-springmvc.xml</module>
+		<module>test-springmvc.webApplicationInitializer.jsp</module>
 	</modules>
 </project>
