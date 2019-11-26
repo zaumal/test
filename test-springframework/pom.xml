@@ -14,5 +14,6 @@
 		<module>test-spring</module>
 		<module>test-springboot</module>
 		<module>test-springmvc</module>
+		<module>test-springsecurity</module>
 	</modules>
 </project>
