@@ -5,14 +5,14 @@ import javax.servlet.Filter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import com.zaumal.security.conf.SecurityConf;
+import com.zaumal.security.conf.RootConf;
 import com.zaumal.security.conf.WebConf;
 
 public class MyAnnotationWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { SecurityConf.class };
+		return new Class<?>[] { RootConf.class };
 	}
 
 	@Override
