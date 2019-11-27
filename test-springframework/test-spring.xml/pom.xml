@@ -4,17 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.zaumal</groupId>
-		<artifactId>test</artifactId>
+		<artifactId>test-springframework</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>test-springframework</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>test-spring.xml</artifactId>
 
-	<modules>
-		<module>test-spring</module>
-		<module>test-springboot</module>
-		<module>test-springmvc</module>
-		<module>test-springsecurity</module>
-		<module>test-spring.xml</module>
-	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>5.2.1.RELEASE</version>
+		</dependency>
+	</dependencies>
 </project>

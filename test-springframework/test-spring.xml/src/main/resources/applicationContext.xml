@@ -1,0 +1,8 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:testxml="http://zaumal.com/testxml/schema/people"
+	xsi:schemaLocation="  
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd  
+http://zaumal.com/testxml/schema/people http://zaumal.com/testxml/schema/people.xsd">
+	<testxml:people id="test001" name="张三" age="27" />
+</beans>
