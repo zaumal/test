@@ -7,12 +7,13 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import com.zaumal.security.conf.RootConf;
 import com.zaumal.security.conf.WebConf;
+import com.zaumal.security.security.SecurityConfig;
 
 public class MyAnnotationWebApplicationInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { RootConf.class };
+		return new Class<?>[] { RootConf.class,SecurityConfig.class };
 	}
 
 	@Override
