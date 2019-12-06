@@ -16,5 +16,7 @@
 		<module>test-springmvc</module>
 		<module>test-springsecurity</module>
 		<module>test-spring.xml</module>
+		<module>test-springdatajpa</module>
+		<module>test-springaop</module>
 	</modules>
 </project>
