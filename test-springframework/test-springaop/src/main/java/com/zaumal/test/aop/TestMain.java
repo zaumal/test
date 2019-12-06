@@ -1,5 +1,6 @@
 package com.zaumal.test.aop;
 
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.zaumal.test.aop.conf.AppConf;
@@ -14,7 +15,6 @@ public class TestMain {
 		TestService ts = acac.getBean(TestService.class);
 		
 		ts.test1("t1");
-		
 		System.out.println("================");
 		acac.close();
 		
