@@ -1,4 +1,4 @@
-package com.zaumal.demo01.binaryTree;
+package com.zaumal.demo.binaryTree;
 
 import java.util.ArrayDeque;
 import java.util.Queue;

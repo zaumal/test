@@ -1,4 +1,4 @@
-package com.zaumal.demo01.binaryTree;
+package com.zaumal.demo.binaryTree;
 
 /*
  * 平衡二叉树
