@@ -40,5 +40,6 @@
 		<module>test-springmvc.annotation.nowebxml</module>
 		<module>test-springmvc.webApplicationInitializer</module>
 		<module>test-springframework</module>
+		<module>test-spi</module>
 	</modules>
 </project>
