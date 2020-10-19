@@ -8,7 +8,7 @@ import com.zaumal.test.mvc.service.TestService;
 
 @RestController
 public class TestController {
-//	@Autowired
+	@Autowired
 	private TestService testService;
 	
 	@GetMapping("/test")

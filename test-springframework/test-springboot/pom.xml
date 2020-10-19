@@ -13,6 +13,7 @@
 		<module>test-springwebmvc</module>
 		<module>test-springbootadmin</module>
 		<module>test-springbootaop</module>
+		<module>test-spirngboot-starter</module>
 	</modules>
 
 	<dependencyManagement>
