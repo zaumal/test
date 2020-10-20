@@ -10,7 +10,7 @@ import com.zaumal.test.springboot.expand.listener.event.MyApplicationEvent;
 public class DemoApplication {
 	public static void main(String[] args) {
 		ApplicationContext ac = SpringApplication.run(DemoApplication.class, args);
-		
+
 		System.out.println("=================================== EVENT ========================================");
 		
 		MyApplicationEvent myEvent = new MyApplicationEvent("springboot测试", "测试自定义application事件");

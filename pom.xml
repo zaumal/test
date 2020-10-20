@@ -41,5 +41,6 @@
 		<module>test-springmvc.webApplicationInitializer</module>
 		<module>test-springframework</module>
 		<module>test-spi</module>
+		<module>test-demo</module>
 	</modules>
 </project>
