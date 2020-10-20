@@ -14,6 +14,7 @@
 		<module>test-springbootadmin</module>
 		<module>test-springbootaop</module>
 		<module>test-spirngboot-starter</module>
+		<module>test-springboot-expand</module>
 	</modules>
 
 	<dependencyManagement>

@@ -1,0 +1,7 @@
+#org.springframework.boot.SpringApplicationRunListener=\
+com.zaumal.test.springboot.expand.listener.MySpringApplicationRunListener
+org.springframework.context.ApplicationListener=\
+com.zaumal.test.springboot.expand.listener.MyApplicationListener1,\
+com.zaumal.test.springboot.expand.listener.MyApplicationListener2
+org.springframework.context.ApplicationContextInitializer=\
+com.zaumal.test.springboot.expand.Initializer.MyApplicationContextInitializer
