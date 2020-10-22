@@ -1,4 +1,4 @@
-package com.zaumal.tools;
+package com.zaumal.test.tools;
 
 import java.io.File;
 import java.io.FileInputStream;

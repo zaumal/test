@@ -14,8 +14,13 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
-	@GetMapping("/{sid}")
-	public int crateOrder(@PathVariable Integer sid) {
-		return orderService.createOrder(sid);
+	@GetMapping("/wrong/{sid}")
+	public int createWrongOrder(@PathVariable Integer sid) {
+		return orderService.createWrongOrder(sid);
+	}
+	
+	@GetMapping("/optimistic/{sid}")
+	public int createOptimisticOrder(@PathVariable Integer sid) {
+		return orderService.createOptimisticOrder(sid);
 	}
 }

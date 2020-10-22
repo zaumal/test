@@ -6,6 +6,11 @@ public class Test2 {
 		ThreadLocal<Integer> tl = new ThreadLocal<Integer>();
 		tl.set(1);
 		
+		int n = 0;
+		for(int i = 0; i < 10; i++) {
+			n = n++;
+		}
+		System.out.println(n);
 	}
 }
 

@@ -31,4 +31,7 @@ public class StockService extends BaseService<Stock, Integer>{
 		stockDao.save(stock);
 	}
 	
+	public int saleOptimisticStock(Stock stock) {
+		return stockDao.saveOptimistic(stock.getSale()+1, stock.getVersion()+1,stock.getId(),stock.getVersion());
+	}
 }

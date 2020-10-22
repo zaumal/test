@@ -25,7 +25,7 @@ public class OrderService extends BaseService<Order, Integer>{
 	}
 
 	@Transactional
-	public int createOrder(Integer sid) {
+	public int createWrongOrder(Integer sid) {
 		//检验库存
 		Stock stock = stockService.checkStock(sid);
 		//卖库存
@@ -43,6 +43,19 @@ public class OrderService extends BaseService<Order, Integer>{
 		order = orderDao.save(order);
 		
 		return order.getId();
+	}
+
+	@Transactional
+	public int createOptimisticOrder(Integer sid) {
+		//检验库存
+		Stock stock = stockService.checkStock(sid);
+		//卖库存
+		int n = stockService.saleOptimisticStock(stock);
+		//创建订单
+		if(n == 1){
+			return crateOrder(stock);
+		}
+		return -1;
 	}
 	
 }
