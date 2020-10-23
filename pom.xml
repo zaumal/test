@@ -44,5 +44,6 @@
 		<module>test-demo</module>
 		<module>test-mq</module>
 		<module>test-tools</module>
+		<module>test-mybatis</module>
 	</modules>
 </project>
