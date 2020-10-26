@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: springcloud-admin-server
+  profiles:
+    active: dev
+  cloud:
+    config:
+      name: springbootadmin-dev  #配置文件名称
+      profile: yml　　　　#读取后缀名称
+      label:       #分支名称
+      discovery:
+        enabled: true
+        serviceId: springcloud-config
+server:
+  port: 18099
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

@@ -99,3 +99,6 @@ ribbon:
 # Hystrix在最外层，然后再到Ribbon，最后里面的是http请求。
 # 所以说，Hystrix的熔断时间必须大于Ribbon的 ( ConnectTimeout + ReadTimeout )。
 # 如果Ribbon开启了重试机制，还需要乘以对应的重试次数，保证在Ribbon里的请求还没结束时，Hystrix的熔断时间不会超时。
+
+test:
+  v1: test010

@@ -58,5 +58,6 @@
 		<module>demo3-2</module>
 		<module>springboot-admin</module>
 		<module>gateway</module>
+		<module>config</module>
 	</modules>
 </project>
