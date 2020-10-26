@@ -4,6 +4,7 @@ package com.zaumal.demo.sort;
  * #快速排序法
  * 1、快速排序的核心是分割，确定一个用作分割的基准数字，将原数组分割成两个部分，左边的比基准数字小，右边的比基准数字大。
  * 2、然后递归迭代，分别将左部和右部的两个部分进行快速排序，直到整个数组有序。
+ * 参考：https://www.jianshu.com/p/305c83268510
  */
 public class TestQuickSort extends TestSort{
 	public void quickSort(int[] data) {
@@ -42,7 +43,8 @@ public class TestQuickSort extends TestSort{
 			//6、循环一直到low和high相遇
 		}
 		
-		//7、将基准元素放到左哨兵的位置
+		//7、将基准元素放到左哨兵的位置（此时，左哨兵和右哨兵的位置重合）
+//		System.out.println(low==high);
 		data[low] = n;
 		
 		//low为基准元素所在的位置
