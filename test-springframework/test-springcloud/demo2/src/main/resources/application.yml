@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: demo2
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  zipkin:
+    #zipkin server的请求地址
+    base-url: http://localhost:9411/
+    sender:
+      #请求方式,默认以http的方式向zipkin server发送追踪数据
+      type: web
+  sleuth:
+    sampler:
+      #采样的百分比
+      probability: 1.0
+    web:
+      client:
+        enabled: true
+  boot:
+    admin:
+      client:
+        #springboot admin client连接 spring boot admin server 端点地址
+        url: http://localhost:18099
+        instance:
+          #默认使用的是主机名注册，改为使用ip注册
+          prefer-ip: true
+        username: admin
+        password: 123456
+### 监控中心配置, 允许监控所有接口
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  port: 18082
+#  servlet:
+#    context-path: /sysbase
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    #eureka client刷新本地缓存时间
+    #默认30s
+    registry-fetch-interval-seconds: 30
+  instance:
+    prefer-ip-address: false
+    ip-address: localhost
+    #服务过期时间配置,超过这个时间没有接收到心跳EurekaServer就会将这个实例剔除
+    #注意，EurekaServer一定要设置eureka.server.eviction-interval-timer-in-ms否则这个配置无效，
+    #这个配置一般为服务刷新时间配置的三倍
+    #默认90s
+    lease-expiration-duration-in-seconds: 15
+    #服务刷新时间配置，每隔这个时间会主动心跳一次
+    #默认30s
+    lease-renewal-interval-in-seconds: 30
+#日志配置文件
+logging:
+  config: classpath:logback-boot.xml 

@@ -18,5 +18,6 @@
 		<module>test-spring.xml</module>
 		<module>test-springdatajpa</module>
 		<module>test-springaop</module>
+		<module>test-springcloud</module>
 	</modules>
 </project>

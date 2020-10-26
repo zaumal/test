@@ -1,0 +1,61 @@
+server:
+  port: 18080
+spring:
+  application:
+    name: springcloud-gateway
+  zipkin:
+    #zipkin server的请求地址
+    base-url: http://localhost:9411/
+    sender:
+      #请求方式,默认以http的方式向zipkin server发送追踪数据
+      type: web
+  sleuth:
+    sampler:
+      #采样的百分比
+      probability: 1.0
+    web:
+      client:
+        enabled: true
+  cloud:
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: config-server
+#      label: master
+    gateway:
+      enabled: true  #开启网关
+      discovery:
+        locator:
+          enabled: true #开启自动路由,以服务id建立路由，服务id默认大写
+#          lower-case-service-id: true #服务id设置为小写
+      routes:
+      - id: demo1
+        uri: lb://demo1
+        predicates:
+        - Path=/demo1/**
+      - id: demo2
+        uri: lb://demo2
+        predicates:
+        - Path=/demo2/**
+      - id: demo3
+        uri: lb://demo3
+        predicates:
+        - Path=/demo3/**
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    #eureka client刷新本地缓存时间
+    #默认30s
+    registry-fetch-interval-seconds: 30
+  instance:
+    prefer-ip-address: false
+    ip-address: localhost
+    #服务过期时间配置,超过这个时间没有接收到心跳EurekaServer就会将这个实例剔除
+    #注意，EurekaServer一定要设置eureka.server.eviction-interval-timer-in-ms否则这个配置无效，
+    #这个配置一般为服务刷新时间配置的三倍
+    #默认90s
+    lease-expiration-duration-in-seconds: 15
+    #服务刷新时间配置，每隔这个时间会主动心跳一次
+    #默认30s
+    lease-renewal-interval-in-seconds: 30
