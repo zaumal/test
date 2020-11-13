@@ -16,6 +16,9 @@
 		<module>test-spirngboot-starter</module>
 		<module>test-springboot-expand</module>
 		<module>test-springboot-devtools</module>
+		<module>test-springboot-demo</module>
+		<module>test-mybaits-plus</module>
+		<module>test-code-generator</module>
 	</modules>
 
 	<dependencyManagement>
