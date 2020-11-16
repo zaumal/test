@@ -1,4 +1,4 @@
-package t;
+package com.zaumal.test.thread;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -7,10 +7,10 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 /**
- * Future È±µã£º
- * FutureËäÈ»¿ÉÒÔÊµÏÖ»ñÈ¡Òì²½Ö´ĞĞ½á¹ûµÄĞèÇó£¬µ«ÊÇËüÃ»ÓĞÌá¹©Í¨ÖªµÄ»úÖÆ£¬ÎÒÃÇÎŞ·¨µÃÖªFutureÊ²Ã´Ê±ºòÍê³É¡£
- * ÒªÃ´Ê¹ÓÃ×èÈû£¬ÔÚfuture.get()µÄµØ·½µÈ´ıfuture·µ»ØµÄ½á¹û£¬ÕâÊ±ÓÖ±ä³ÉÍ¬²½²Ù×÷¡£
- * ÒªÃ´Ê¹ÓÃisDone()ÂÖÑ¯µØÅĞ¶ÏFutureÊÇ·ñÍê³É£¬ÕâÑù»áºÄ·ÑCPUµÄ×ÊÔ´¡£
+ * Future ç¼ºç‚¹ï¼š
+ * Futureè™½ç„¶å¯ä»¥å®ç°è·å–å¼‚æ­¥æ‰§è¡Œç»“æœçš„éœ€æ±‚ï¼Œä½†æ˜¯å®ƒæ²¡æœ‰æä¾›é€šçŸ¥çš„æœºåˆ¶ï¼Œæˆ‘ä»¬æ— æ³•å¾—çŸ¥Futureä»€ä¹ˆæ—¶å€™å®Œæˆã€‚
+ * è¦ä¹ˆä½¿ç”¨é˜»å¡ï¼Œåœ¨future.get()çš„åœ°æ–¹ç­‰å¾…futureè¿”å›çš„ç»“æœï¼Œè¿™æ—¶åˆå˜æˆåŒæ­¥æ“ä½œã€‚
+ * è¦ä¹ˆä½¿ç”¨isDone()è½®è¯¢åœ°åˆ¤æ–­Futureæ˜¯å¦å®Œæˆï¼Œè¿™æ ·ä¼šè€—è´¹CPUçš„èµ„æºã€‚
  */
 public class TestFutureTask {
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
@@ -18,7 +18,7 @@ public class TestFutureTask {
 		
 		testExecutors();
 		
-//		testCallable();// ¼û TestCallable
+//		testCallable();// ï¿½ï¿½ TestCallable
 	}
 	
 	public static void testExecutors() throws InterruptedException, ExecutionException {

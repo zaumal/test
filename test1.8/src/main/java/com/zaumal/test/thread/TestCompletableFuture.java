@@ -1,4 +1,4 @@
-package t;
+package com.zaumal.test.thread;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

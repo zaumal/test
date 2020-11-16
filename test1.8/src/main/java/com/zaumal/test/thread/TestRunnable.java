@@ -1,4 +1,4 @@
-package t;
+package com.zaumal.test.thread;
 
 public class TestRunnable {
 	public static void main(String[] args) throws InterruptedException {
