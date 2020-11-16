@@ -1,0 +1,62 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  shardingsphere:
+    props:
+      # 打印sql
+      sql.show: true
+      check:
+        table:
+          metadata:
+            # 是否在启动时检查分表元数据一致性
+            enabled: false
+    datasource:
+      names: ssd1,ssd2
+      ssd1:
+#        type: com.alibaba.druid.pool.DruidDataSource
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/ssd1?useSSL=true&verifyServerCertificate=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+      ssd2:
+#        type: com.alibaba.druid.pool.DruidDataSource
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/ssd2?useSSL=true&verifyServerCertificate=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: root
+    sharding:
+      # 默认数据源
+      default-data-source-name: ssd1
+
+      #默认主键生成策略
+      default-key-generator:
+        type: SNOWFLAKE
+        column: id
+        worker:
+          id: order
+        max:
+          tolerate:
+            time:
+              difference:
+                milliseconds: 1
+      #默认分库策略，按照id划分，id除以2取模并加上1（因为本demo数据库名称是从1开始的），如果结果为1就在ssd1库，如果结果为2就在ssd2库
+      default-database-strategy:
+        inline:
+          sharding-column: id
+          algorithm-expression: ssd$->{id % 2 +1}
+
+      #分表策略
+      tables:
+        t_user0:
+          #主键生成策略
+#          key-generator:
+#            column: id
+#            type: SNOWFLAKE
+          actual-data-nodes: ssd$->{1..2}.t_user$->{0..1}
+          #在本库中分表策略，按照年龄分表，通过年龄除以2取模，如果为0就存到t_user0,如果为1就存到t_user1
+          table-strategy:
+            inline:
+              sharding-column: age
+              algorithm-expression: t_user$->{age % 2}

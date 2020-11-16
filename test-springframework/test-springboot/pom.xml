@@ -19,6 +19,7 @@
 		<module>test-springboot-demo</module>
 		<module>test-mybaits-plus</module>
 		<module>test-code-generator</module>
+		<module>test-sharding-jdbc</module>
 	</modules>
 
 	<dependencyManagement>
