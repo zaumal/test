@@ -19,5 +19,6 @@
 		<module>test-springdatajpa</module>
 		<module>test-springaop</module>
 		<module>test-springcloud</module>
+		<module>test-spring-webflux</module>
 	</modules>
 </project>

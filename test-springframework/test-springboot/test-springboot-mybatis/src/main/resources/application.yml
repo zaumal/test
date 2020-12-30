@@ -1,0 +1,22 @@
+# DataSource Config
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password: root
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    schema: classpath:db/schema-h2.sql
+#    data: classpath:db/data-h2.sql
+#    url: jdbc:h2:mem:test
+#    username: root
+#    password: test
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  typeAliasesPackage: com.test.entity
+logging:
+  level:
+    com.test.mapper: debug
+  config: classpath:logback-boot.xml
+mytask:
+  cron: 0 0/1 * * * ?

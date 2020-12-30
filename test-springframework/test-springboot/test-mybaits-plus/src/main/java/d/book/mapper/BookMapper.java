@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-11-13
  */
 public interface BookMapper extends BaseMapper<Book> {
-
+	void update(Book book);
 }

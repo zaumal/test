@@ -20,6 +20,9 @@
 		<module>test-mybaits-plus</module>
 		<module>test-code-generator</module>
 		<module>test-sharding-jdbc</module>
+		<module>test-springboot-springwebflux</module>
+		<module>test-springboot-mybatis</module>
+		<module>test-springboot-rocketmq</module>
 	</modules>
 
 	<dependencyManagement>

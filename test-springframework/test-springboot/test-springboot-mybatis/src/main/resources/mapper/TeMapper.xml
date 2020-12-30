@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mapper.TeMapper">
+	<resultMap type="Te" id="teResult">
+		<result property="id" column="id" />
+		<result property="bId" column="b_id" />
+		<result property="bName" column="b_name" />
+		<result property="remark" column="remark" />
+	</resultMap>
+	
+	<sql id="selectVo">
+		select id,b_id,b_name,remark from te
+	</sql>
+	
+	<select id="selectList" resultMap="teResult" parameterType="Te">
+		<include refid="selectVo"/>
+		<where>
+			1=1
+			<if test="bId != null and bId != ''">and b_id = #{bId}</if>
+			<if test="bName != null and bName != ''">and b_name like concat('%',#{bName},'%')</if>
+			<if test="remark != null and remark != ''">and remark = like concat('%',#{remark},'%')</if>
+		</where>
+		order by id desc
+	</select>
+
+	<update id="update" parameterType="Te">
+		update te
+		<trim prefix="set" suffixOverrides=",">
+			<if test="bId != null and bId != ''">b_id=#{bId},</if>
+			<if test="bName != null and bName != ''">b_name=#{bName},</if>
+			<if test="remark != null and remark != ''">remark=#{remark},</if>
+		</trim>
+		where id=#{id}
+	</update>
+	
+	<insert id="insert" parameterType="Te" useGeneratedKeys="true" keyProperty="id">
+		insert into te
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">id,</if>
+			<if test="bId != null and bId != ''">b_id,</if>
+			<if test="bName != null and bName != ''">b_name,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">#{id},</if>
+			<if test="bId != null and bId != ''">#{bId},</if>
+			<if test="bName != null and bName != ''">#{bName},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+		</trim>
+	</insert>
+	
+	<select id="selectListForUpdate" resultMap="teResult" parameterType="Te">
+		<include refid="selectVo"></include>
+		for update
+	</select>
+</mapper>
