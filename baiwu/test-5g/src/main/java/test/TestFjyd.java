@@ -1,10 +1,7 @@
 package test;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Base64;
 import java.util.List;
 
@@ -15,13 +12,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-import util.FileUtil;
+import util.CloseUtil;
 import util.SHA256Util;
 
 public class TestFjyd extends TestFjydtH5{
-	public TestFjyd(String appid, String password) {
-		super(appid, password);
+	public TestFjyd(String chatbotId,String appid, String password) {
+		super(chatbotId,appid, password);
 		init(appid,password);
+		this.sendUrl = "http://112.35.162.232:8078/mbmp/developer/accesslayer/messaging/group/v1/outbound/" + getchatbotSip() + "/requests";
+		this.uploadUrl = "http://112.35.162.232:8078/mbmp/fileservice/accesslayer/Content";
+		this.notifyUrl = "http://124.239.146.131:9090/rcs/api/fjyd5g/mediaCallback";
 	}
 
 	private RestTemplate restTemplate;
@@ -42,37 +42,55 @@ public class TestFjyd extends TestFjydtH5{
 		//百信银行
 		String appid = "125200401111514";
 		String appSecret = "52CzPp$X\\^k>YEcF>";
-		String chatbotId = "125200401111514";
-//		String fileUrl = "http://112.35.162.232:8078/mbmp/fileservice/accesslayer/543447716626194436";
 		
-		TestFjyd t = new TestFjyd(appid,appSecret);
+		//清锋时代5G消息
+//		String appid = "125200401111835"; 
+//		String chatbotId = "125200401111835"; 
+//		String appSecret = "nF7#b<7Bk4iG/L]2";
+//		String fileUrl = "https://gz01ft.sbc.rcs.chinamobile.com:10003/s/12301903561132360460404544TD";
+//		String fileUrl = "https://gz01ft.sbc.rcs.chinamobile.com:10003/s/12301903561132360460404544FD.mp4";
+//		String fileUrl = "https://gz01ft.sbc.rcs.chinamobile.com:10012/s/01071514281132520021218757TD";
+		
+		TestFjyd t = new TestFjyd(appid,appid,appSecret);
 //		t.downloadFile(chatbotId, fileUrl);
 		
 		t.phone = "15811491455";
 //		t.url = "http://112.35.162.232:8078/mbmp/developer/accesslayer/messaging/interaction/v1/outbound/" + t.getchatbotUri(chatbotId) + "/requests";
 //	
-//		t.getTextXml();
+//		t.requestTextXml();
+//		
+//
+//		t.downloadFile(chatbotId, fileUrl);
+		
+//		t.testSuoLueTu();
+		
+//		t.testZhiNengXueXi();
+		
+//		t.requestFileUpload();
+		
+		t.downloadFile("http://112.35.162.232:8078/mbmp/fileservice/accesslayer/556532080670953475");
 	}
-
-	private String getFileName(HttpHeaders responseHeaders) {
+	
+	void requestFileUpload() {
+		String thumbnail = "file/image1-thumbnail.png";
+		String thumbnailType = "image/png";
+		String file = "file/image1.jpg";
+		String fileType = "image/jpg";
+		
+		uploadFile(thumbnail,thumbnailType, file,fileType);
+	}
+	
+	String getFileName(HttpHeaders responseHeaders) {
 		List<String> contentDisposition = responseHeaders.get("Content-disposition");
 		if(null != contentDisposition && contentDisposition.size() > 0) {
 			String content = contentDisposition.get(0);
-			if(null != content) {
-				String[] attachment = content.split(";");
-				if(attachment.length == 2) {
-					String[] filename = attachment[1].split("=");
-					if(filename.length == 2) {
-						return filename[1];
-					}
-				}
-			}
+			return super.getFileName(content);
 		}
 		return null;
 	}
 	
-	public void downloadFile(String chatbotId,String fileUrl) {
-		ResponseEntity<byte[]> response = restTemplate.exchange(fileUrl, HttpMethod.GET,getRequest2(chatbotId),byte[].class);
+	public void downloadFile(String fileUrl) {
+		ResponseEntity<byte[]> response = restTemplate.exchange(fileUrl, HttpMethod.GET,getRequest2(),byte[].class);
 		
 		int statusCode = response.getStatusCode().value();
 		System.out.println("status code:" + statusCode);
@@ -87,7 +105,6 @@ public class TestFjyd extends TestFjydtH5{
 			System.out.println();
 		});
 //		System.out.println("response body:" + new String(response.getBody()));
-		
 
 		String filename = getFileName(responseHeaders);
 		
@@ -95,41 +112,25 @@ public class TestFjyd extends TestFjydtH5{
 			System.out.println("file name:" + filename);
 			
 			InputStream is = null;
-			OutputStream os = null;
 			try {
 				is = new ByteArrayInputStream(response.getBody());
-				
-				String filePath = "tmp" + File.separator + filename;
-				
-				File file = new File(filePath);
-				
-				os = new FileOutputStream(file);
-				
-				int len = 0;
-				byte[] buff = new byte[1024];
-				while((len = is.read(buff,0,1024)) != -1) {
-					os.write(buff,0,len);
-				}
-				os.flush();
+				download(is, filename);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}finally {
-				FileUtil.close(is);
-				FileUtil.close(os);
+				CloseUtil.close(is);
 			}
 		}else {
 			System.out.println("response body:" + new String(response.getBody()));
 		}
 	}
 
-	private HttpEntity<Void> getRequest2(String chatbotId) {
-		String chatbotUri = getchatbotUri(chatbotId);
-//		String chatbotUri = "sip:125200401111514@botplatform.rcs.chinamobile.com";
+	private HttpEntity<Void> getRequest2() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", authorization);
 		headers.add("Date", headerDate);
-		headers.add("X-3GPP-Intended-Identity", chatbotUri);
-		headers.add("User-Agent", "SP/" + chatbotUri);
+		headers.add("X-3GPP-Intended-Identity", getchatbotUri());
+		headers.add("User-Agent", "SP/" + getchatbotSip());
 		headers.add("Terminal-type", "Chatbot");
 		headers.add("Connection", "close");
 

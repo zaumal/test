@@ -3,52 +3,151 @@ package test;
 import java.io.File;
 import java.util.UUID;
 
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import org.springframework.http.HttpHeaders;
 
 public class TestShlt extends AbstractDemo{
-	private String spi = "sip:10655210001@botplatform.rcs.chinaunicom.cn";
-	public TestShlt() {
-		super("iap_201201001008","12345678");
-		//联通号
-		this.phone = "18611886117";
+	public TestShlt() {}
+	public TestShlt(String chatbotId,String appid,String password) {
+		super(chatbotId,appid,password);
+		this.sendUrl = "https://220.196.54.31:8443/maapdiscovery/messaging/v1/outbound/" + getchatbotSip() + "/requests";
+		this.revokeUrl = "https://220.196.54.31:8443/maapdiscovery/messaging/v1/outbound/" + getchatbotSip() + "/requests/messageId/status";
+		this.uploadUrl = "https://ft101.sh.5gm.wo.cn:9443";
+		this.deleteUrl = "https://ft101.sh.5gm.wo.cn:9443/Content";
+		this.notifyUrl = "http://124.239.146.131:9090/rcs/api/shlt5g/mediaCallback";
 	}
 	
 	public static void main(String[] args) {
-		TestShlt t = new TestShlt();
-//		t.getFileSize();
+		//和选电商
+		String chatbotId = "10655210001";
+		String appid = "iap_201201001008";
+		String password = "12345678";
 		
-		t.getSugDkpXml();
+		TestShlt t = new TestShlt(chatbotId,appid,password);
+		
+		//联通号
+		t.phone = "18611886117";
+		//国芳联通手机
+//		t.phone = "18518258286";
+		//本奇联通手机
+//		t.phone = "18501960660";
+
+		//1、下行带建议回复的文本消息
+//		t.requestSugTextXml();
+//		//2、下行纯文本消息
+		t.requestTextXml();
+//		//3、下发纯文件消息
+//		t.requestFileXml();
+//		//4、下发带建议回复的文件消息
+//		t.requestSugFileXml();
+//		//5、下发单卡片消息
+//		t.requestDkpXml();
+//		//6、下发带建议回复的单卡片消息
+//		t.requestSugDkpXml();
+//		//7、下发多卡片消息
+//		t.requestDuokpXml();
+//		//8、下发带建议回复的多卡片消息
+//		t.requestSugDuokpXml();
+//		//9、下发地理位置推送回落消息
+//		t.requestGeoXml();
+		//11、下发回落up1.0
+//		t.requestUp10FileXml();
+//		t.requestUp10TextXml();
+		//12、下发待回落短信消息
+//		t.requestSmsTextXml();
+		
+		//撤回消息
+//		String msg1 = t.requestTextXml();
+//		t.revokeMessage(t.getMessageId(msg1));
+//		t.revokeMessage("fasfd");
+		//上传文件
+//		t.requestFileUpload();
+		//下载文件
+//		t.requestDownload();
+		
+		//群发消息
+//		t.requestGroupTextXml();
+		
+		//删除文件
+//		t.deleteFile("0a32b5d9-8ba6-498e-8a8a-1e77f5dee158");
+		
+		//状态报告、撤回通知、文件审核通知、上行消息
 	}
 	
-	
-	void request(String data) {
-		System.out.println("request ---------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ");
-		String url = "https://220.196.54.31:8443/maapdiscovery/messaging/v1/outbound/sip:10655210001@botplatform.rcs.chinaunicom.cn/requests";
-		System.out.println(url);
-		System.out.println("xml : ");
-		System.out.println(data);
-		System.out.println();
-		System.out.println();
-		request(data,x -> {
-				RequestBody body = RequestBody.create(x, mediaTypeStr);
-				return new Request.Builder()
-						.url(url)
-						.addHeader("Address", "+86" + phone)
-						.addHeader("Authorization", authorization)
-						.addHeader("Date", headerDate)
-						.addHeader("Content-Type", "application/xml")
-						.post(body)
-						.build();
-		});
+	FileInfo getFileInfo() {
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+				"<file\r\n" + 
+				"    xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\"\r\n" + 
+				"    xmlns:e=\"urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext\">\r\n" + 
+				"    <file-info type=\"thumbnail\">\r\n" + 
+				"        <file-size>9216</file-size>\r\n" + 
+				"        <content-type>image/jpg</content-type>\r\n" + 
+				"        <data url=\"https://ft101.sh.5gm.wo.cn:10099/s/01181409311101410110100018TD\" until=\"2021-01-21T14:09:31Z\"/>\r\n" + 
+				"    </file-info>\r\n" + 
+				"    <file-info type=\"file\">\r\n" + 
+				"        <file-size>171008</file-size>\r\n" + 
+				"        <file-name>car.png</file-name>\r\n" + 
+				"        <content-type>image/png</content-type>\r\n" + 
+				"        <data url=\"https://ft101.sh.5gm.wo.cn:10099/s/01181409311101410110100018FD.png\" until=\"2021-01-21T14:09:31Z\"/>\r\n" + 
+				"        <file-exist>1</file-exist>\r\n" + 
+				"        <e:branded-url>https://1/s/W4eRJfAABqQ.png</e:branded-url>\r\n" + 
+				"    </file-info>\r\n" + 
+				"</file>";
+		return readXml(xml);
 	}
 	
-	void requestFileUpload(String file,String thumbnail) {
-		System.out.println("request ---------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ");
-		String url = "https://ft101.sh.5gm.wo.cn:9443";
-		System.out.println(url);
-		System.out.println();
-		System.out.println();
+	String getFile() {
+		FileInfo fileInfo = getFileInfo();
+		String thumbnailUrl = fileInfo.thumbnailFileUrl;
+		String thumbnailType = fileInfo.thumbnailFileType;
+		String thumbnailSize = fileInfo.thumbnailFileSize;
+		String fileUrl = fileInfo.fileUrl;
+		String fileType = fileInfo.fileType;
+		String fileSize = fileInfo.fileSize;
+		String fileName = fileInfo.fileName;
+		return getFile(thumbnailUrl,thumbnailType,thumbnailSize,fileUrl,fileType,fileSize,fileName);
+	}
+	
+	void requestDownload() {
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10099/s/01151721411101410060100012FD.jpg";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10099/s/01181352061101410040100010TD";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10099/s/01181352061101410040100010FD.png";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10001/s/01181835421101410120100002FD.amr";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10001/s/01181843451101410130100003TD";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10001/s/01181843451101410130100003FD.jpg";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10001/s/01181846331101410100100002TD";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10001/s/01181846331101410100100002FD.mp4";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10099/s/01181859091101410140100003TD";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10099/s/01181859091101410140100003FD.mp4";
+//		String url1 = "https://ft101.sh.5gm.wo.cn:10099/s/01181904031101410070100002FD.amr";
+		
+//		String url1 = "http://192.168.6.171:7085/rcs/shlt/20210120/upload/thumbnail/car.png";
+//		String url1 = "http://192.168.6.171:7085/rcs/shlt/20210120/upload/file/car-thumbnail.jpg";
+		String url1 = "https://ft101.sh.5gm.wo.cn:10001/s/01181846331101410100100002FD.mp4";
+		downloadFile2(url1);
+	}
+	
+	String getFileName(HttpHeaders responseHeaders) {
+		return UUID.randomUUID().toString();
+	}
+	
+	void requestFileUpload() {
+//		String thumbnail = null;
+//		String thumbnailType = "image/jpeg";
+//		String file = "tmp/c9448c06-7dde-4bf2-9766-d1d9fd53e187.amr";
+//		String fileType = "audio/amr";
+		
+//		String thumbnail = "x:\\rcs\\20210118\\zhang001\\dac26b5675e7ecf08c7a25a48598dff5.PNG";
+//		String thumbnailType = "image/PNG";
+//		String file = "x:\\rcs\\20210118\\zhang001\\a6131d73887c5fa669bb4518dac83173.JPG";
+//		String fileType = "image/JPG";
+		
+		String thumbnail = "D:\\tmp\\202101\\dac26b5675e7ecf08c7a25a48598dff5.PNG";
+        String thumbnailType = "image/PNG";
+//        File file = new File("x:\\rcs\\20210118\\zhang001\\a6131d73887c5fa669bb4518dac83173.JPG");
+        String file = "D:\\tmp\\202101\\a6131d73887c5fa669bb4518dac83173.JPG";
+        String fileType = "image/JPG";
+		
+		uploadFile(thumbnail,thumbnailType, file,fileType);
 	}
 	
 	String getSug() {
@@ -57,9 +156,9 @@ public class TestShlt extends AbstractDemo{
 				"  \"suggestions\": [\r\n" +
 				"    {\r\n" +
 				"      \"reply\": {\r\n" + 
-				"        \"displayText\": \"Yes\",\r\n" + 
+				"        \"displayText\": \"是\",\r\n" + 
 				"        \"postback\": {\r\n" +
-				"          \"data\": \"set_by_chatbot_reply_yes\"\r\n" + 
+				"          \"data\": \"是data\"\r\n" + 
 				"        }\r\n" +
 				"      }\r\n" +
 				"    },\r\n" +
@@ -67,22 +166,56 @@ public class TestShlt extends AbstractDemo{
 				"      \"action\": {\r\n" + 
 				"        \"urlAction\": {\r\n" + 
 				"          \"openUrl\": {\r\n" +
-				"            \"url\": \"https://www.google.com\"\r\n" + 
+				"            \"url\": \"https://www.baidu.com\"\r\n" + 
 				"          }\r\n" +
 				"        },\r\n" +
-				"        \"displayText\": \"Open website or deep link\",\r\n" + 
+				"        \"displayText\": \"打开百度\",\r\n" + 
 				"        \"postback\": {\r\n" +
-				"          \"data\": \"set_by_chatbot_open_url\"\r\n" + 
+				"          \"data\": \"打开百度data\"\r\n" + 
 				"        }\r\n" +
 				"      }\r\n" +
-				"    }\r\n" +
+				"    },\r\n" +
+				"    {\r\n" + 
+				"      \"action\": {\r\n" + 
+				"        \"mapAction\": {\r\n" + 
+				"          \"showLocation\": {\r\n" + 
+				"            \"location\": {\r\n" + 
+				"              \"latitude\": 37.4220041,\r\n" + 
+				"              \"longitude\": -122.0862515,\r\n" + 
+				"              \"label\": \"Googleplex\"\r\n" + 
+				"            },\r\n" + 
+				"            \"fallbackUrl\": \"https://www.google.com/maps/@37.4219162,-122.078063,15z\"\r\n" + 
+				"          }\r\n" + 
+				"        },\r\n" + 
+				"        \"displayText\": \"显示位置\",\r\n" + 
+				"        \"postback\": {\r\n" + 
+				"          \"data\": \"显示位置data\"\r\n" + 
+				"        }\r\n" + 
+				"      }\r\n" + 
+				"    },\r\n" + 
+				"    {\r\n" + 
+				"      \"action\": {\r\n" + 
+				"        \"calendarAction\": {\r\n" + 
+				"          \"createCalendarEvent\": {\r\n" + 
+				"            \"startTime\": \"2017-03-14T00:00:00Z\",\r\n" + 
+				"            \"endTime\": \"2017-03-14T23:59:59Z\",\r\n" + 
+				"            \"title\": \"会议\",\r\n" + 
+				"            \"description\": \"GSG评审会议\"\r\n" + 
+				"          }\r\n" + 
+				"        },\r\n" + 
+				"        \"displayText\": \"安排会议\",\r\n" + 
+				"        \"postback\": {\r\n" + 
+				"          \"data\": \"安排会议data\"\r\n" + 
+				"        }\r\n" + 
+				"      }\r\n" + 
+				"    }\r\n" + 
 				"  ]\r\n" +
 				"}";
 		return sug;
 	}
 	
 	//1、下发带建议回复的文本消息
-	void getSugTextXml() {
+	void requestSugTextXml() {
 		System.out.println("下发带建议回复的文本消息：");
 		String sug = getSug();
 		
@@ -92,48 +225,54 @@ public class TestShlt extends AbstractDemo{
 				"--next\r\n" +
 				"Content-Type: text/plain\r\n" + 
 				"Content-Length: " + text.getBytes().length + "\r\n\r\n" + 
-				text + "\r\n" +
+				text + "\r\n\r\n" +
 				"--next\r\n" +
 				"Content-Type: application/vnd.gsma.botsuggestion.v1.0+json\r\n" + 
 				"Content-Length: " + sug.getBytes().length + "\r\n\r\n" +
 				sug + "\r\n" +
 				"--next--\r\n";
 		
-		request(getXml("multipart/mixed;boundary=\"next\"",bodyText1));
+		sendMessage(getXml("multipart/mixed;boundary=\"next\"",bodyText1));
 	}
 	
 	//2、下发纯文本消息
-	void getTextXml() {
+	String requestTextXml() {
 		System.out.println("下发纯文本消息：");
-		request(getXml("text/plain","hello,你好"));
+		return sendMessage(getXml("text/plain","hello,你好"));
 	}
 	
 	//3、下发纯文件消息
-	void getFileXml() {
+	String requestFileXml(String thumbnailUrl,String thumbnailType,String thumbnailSize,String fileUrl,String fileType,String fileSize,String fileName) {
 		System.out.println("下发纯文件消息：");
-		request(getXml("application/vnd.gsma.rcs-ft-http+xml", getFile()));
+		return sendMessage(getXml("application/vnd.gsma.rcs-ft-http+xml", getFile(thumbnailUrl,thumbnailType,thumbnailSize,fileUrl,fileType,fileSize,fileName)));
+	}
+	
+	String requestFileXml() {
+		System.out.println("下发纯文件消息2：");
+		return sendMessage(getXml("application/vnd.gsma.rcs-ft-http+xml", getFile()));
 	}
 	
 	//4、下发带建议回复的文件消息
-	void getSugFileXml() {
+	void requestSugFileXml() {
 		System.out.println("下发带建议回复的文件消息：");
 		String file = getFile();
 		
 		String sug = getSug();
 		
-		String body = "--next" + 
+		String body = "--next\r\n" + 
 				"Content-Type: application/vnd.gsma.rcs-ft-http+xml\r\n" + 
 				"Content-Length: " + file.getBytes().length + "\r\n\r\n" +
 				file + "\r\n" + 
 				"--next\r\n" + 
 				"Content-Type: application/vnd.gsma.botsuggestion.v1.0+json\r\n" + 
-				"Content-Length: " + sug.getBytes().length + 
+				"Content-Length: " + sug.getBytes().length + "\r\n\r\n" +
 				sug + "\r\n" + 
 				"--next--\r\n";
-		request(getXml("multipart/mixed; boundary=\"next\"", body));
+		sendMessage(getXml("multipart/mixed; boundary=\"next\"", body));
 	}
 	
 	String getDkp() {
+		FileInfo fileInfo = getFileInfo();
 		String dkp = 
 				"{\r\n" +
 				"  \"message\": {\r\n" + 
@@ -144,45 +283,48 @@ public class TestShlt extends AbstractDemo{
 				"      },\r\n" +
 				"      \"content\": {\r\n" + 
 				"        \"media\": {\r\n" +
-				"          \"mediaUrl\": \"http://124.239.146.131:9000/rcs/20201127/bwkj-test/d69eb04e2d665d68443c82757a938ae2.mp4\",\r\n" + 
-				"          \"mediaContentType\": \"video/mp4\",\r\n" +
-				"          \"thumbnailUrl\": \"http://124.239.146.131:9000/rcs/20201127/bwkj-test/6b21dad90d149eb65da504b1856cab42.jpg\",\r\n" + 
-				"          \"thumbnailContentType\": \"image/png\",\r\n" +
+				"          \"mediaUrl\": \"" + fileInfo.fileUrl + "\",\r\n" + 
+				"          \"mediaContentType\": \"" + fileInfo.fileType + "\",\r\n" +
+				"          \"thumbnailUrl\": \"" + fileInfo.thumbnailFileUrl + "\",\r\n" + 
+				"          \"thumbnailContentType\": \"" + fileInfo.thumbnailFileType + "\",\r\n" +
 				"          \"height\": \"MEDIUM_HEIGHT\"\r\n" +
 				"        },\r\n" +
-				"        \"title\": \"This is a single rich card.\",\r\n" + 
-				"        \"description\": \"This is the description of the rich card. It's the first field that will be truncated if it exceeds the maximum width or height of a card.\"\r\n" + 
+				"        \"title\": \"这是一个单卡片消息.\",\r\n" + 
+				"        \"description\": \"这是单卡片消息的描述. 如果它超过了卡片的最大宽度和长度，内容将会被截断.\"\r\n" + 
 				"      }\r\n" +
 				"    }\r\n" + 
 				"  }\r\n" +
 				"}\r\n";
 		return dkp;
 	}
+	
 	//5、下发单卡片消息
-	void getDkpXml() {
+	void requestDkpXml() {
 		System.out.println("下发单卡片消息：");
-		request(getXml("application/vnd.gsma.botmessage.v1.0+json", getDkp()));
+		sendMessage(getXml("application/vnd.gsma.botmessage.v1.0+json", getDkp()));
 	}
 	
 	//6、下发带建议回复的单卡片消息
-	void getSugDkpXml() {
+	void requestSugDkpXml() {
 		System.out.println("下发带建议回复的单卡片消息：");
 		String sug = getSug();
 		String dkp = getDkp();
 		
 		String sugDkp = "--next\r\n" +
 				"Content-Type: application/vnd.gsma.botmessage.v1.0+json\r\n" + 
-				"Content-Length: [content length]\r\n\r\n" + 
+				"Content-Length: "+ dkp.length() + "\r\n\r\n" + 
 				dkp + "\r\n" +
 				"--next\r\n" + 
 				"Content-Type: application/vnd.gsma.botsuggestion.v1.0+json\r\n" + 
-				"Content-Length: [content length]\r\n\r\n" +
+				"Content-Length: " + sug.length() + "\r\n\r\n" +
 				sug + "\r\n" +
 				"--next--\r\n"; 
-		request(getXml("multipart/mixed; boundary=\"next\"", sugDkp));
+		sendMessage(getXml("multipart/mixed; boundary=\"next\"", sugDkp));
 	}
 	
 	String getDuokp() {
+		FileInfo fileInfo1 = getFileInfo();
+		
 		String duokp = "{" + 
 				"  \"message\": {" + 
 				"    \"generalPurposeCardCarousel\": {" + 
@@ -192,14 +334,14 @@ public class TestShlt extends AbstractDemo{
 				"      \"content\": [" + 
 				"        {" + 
 				"          \"media\": {" + 
-				"            \"mediaUrl\": \"https://cdn.server/path/media.mp4\"," + 
-				"            \"mediaContentType\": \"video/mp4\"," + 
-				"            \"thumbnailUrl\": \"https://cdn.server/path/media.png\"," + 
-				"            \"thumbnailContentType\": \"image/png\"," + 
+				"            \"mediaUrl\": \"" + fileInfo1.fileUrl + "\"," + 
+				"            \"mediaContentType\": \"" + fileInfo1.fileType + "\"," + 
+				"            \"thumbnailUrl\": \"" + fileInfo1.thumbnailFileUrl + "\"," + 
+				"            \"thumbnailContentType\": \"" + fileInfo1.thumbnailFileType + "\"," + 
 				"            \"height\": \"SHORT_HEIGHT\"" + 
 				"          }," + 
-				"          \"title\": \"This is the first rich card in a carousel.\"," + 
-				"          \"description\": \"This is the description of the rich card.It's the first field that will be truncated if it exceeds the maximum width or height of a card.\"," + 
+				"          \"title\": \"这是第一个卡片.\"," + 
+				"          \"description\": \"这是第一个卡片消息的描述. 如果它超过了卡片的最大宽度和长度，内容将会被截断.\"," + 
 				"          \"suggestions\": [" + 
 				"            {" + 
 				"              \"action\": {" + 
@@ -213,9 +355,9 @@ public class TestShlt extends AbstractDemo{
 				"                    \"fallbackUrl\": \"https://www.google.com/maps/@37.4219162,-122.078063,15z\"" + 
 				"                  }" + 
 				"                }," + 
-				"                \"displayText\": \"Show location on a map\"," + 
+				"                \"displayText\": \"显示位置\"," + 
 				"                \"postback\": {" + 
-				"                  \"data\": \"set_by_chatbot_open_map\"" + 
+				"                  \"data\": \"显示位置data\"" + 
 				"                }" + 
 				"              }" + 
 				"            }," + 
@@ -225,20 +367,20 @@ public class TestShlt extends AbstractDemo{
 				"                  \"createCalendarEvent\": {" + 
 				"                    \"startTime\": \"2017-03-14T00:00:00Z\"," + 
 				"                    \"endTime\": \"2017-03-14T23:59:59Z\"," + 
-				"                    \"title\": \"Meeting\"," + 
-				"                    \"description\": \"GSG review meeting\"" + 
+				"                    \"title\": \"会议\"," + 
+				"                    \"description\": \"GSG 评审会议\"" + 
 				"                  }" + 
 				"                }," + 
-				"                \"displayText\": \"Schedule Meeting\"," + 
+				"                \"displayText\": \"预定会议\"," + 
 				"                \"postback\": {" + 
-				"                  \"data\": \"set_by_chatbot_create_calendar_event\"" + 
+				"                  \"data\": \"预定会议data\"" + 
 				"                }" + 
 				"              }" + 
 				"            }" + 
 				"          ]" + 
 				"        }," + 
 				"        {" + 
-				"          \"title\": \"This is the second rich card in the carousel.\"," + 
+				"          \"title\": \"这是第二个卡片.\"," + 
 				"          \"description\": \"Carousel cards need to specify a card width in the 'layout' section. For small width cards, only short and medium height media are supported.\"," + 
 				"          \"[...]\": \"[...]\"" + 
 				"        }" + 
@@ -250,154 +392,136 @@ public class TestShlt extends AbstractDemo{
 	}
 	
 	//7、下发多卡片消息
-	void getDuokpXml() {
+	void requestDuokpXml() {
 		System.out.println("下发多卡片消息：");
-		request(getXml("application/vnd.gsma.botmessage.v1.0+json", getDuokp()));
+		sendMessage(getXml("application/vnd.gsma.botmessage.v1.0+json", getDuokp()));
 	}
 	
-	void getSugDuokpXml() {
+	//8、下发带建议回复的多卡片消息
+	void requestSugDuokpXml() {
 		System.out.println("下发带建议回复的多卡片消息：");
 		String sug = getSug();
 		String duokp = getDuokp();
 		
-		String body = "--next\r\n" + 
-				"Content-Type: application/vnd.gsma.botmessage.v1.0+json\r\n" + 
-				"Content-Length: " + duokp.getBytes().length + "\r\n\r\n" +
+		String body = "\r\n--next\r\n" + 
+				"Content-Type: application/vnd.gsma.botsuggestion.v1.0+json\r\n" + 
+				"Content-Length: " + sug.getBytes().length + "\r\n\r\n" +
 				sug + "\r\n" +
 				"--next\r\n" + 
-				"Content-Type: application/vnd.gsma.botsuggestion.v1.0+json\r\n\r\n" + 
-				"Content-Length: " + sug.getBytes().length + "\r\n" +
-				sug + "\r\n" +
+				"Content-Type: application/vnd.gsma.botmessage.v1.0+json\r\n" + 
+				"Content-Length: " + duokp.getBytes().length + "\r\n\r\n" +
+				duokp + "\r\n" +
 				"--next--\r\n";
 		
-		request(getXml("multipart/mixed; boundary=\"next\"", body));
+		sendMessage(getXml("multipart/mixed; boundary=\"next\"", body));
 	}
 	
 	//9、下发地理位置推送回落消息
-	void getGeoXml() {
+	void requestGeoXml() {
 		System.out.println("下发地理位置推送回落消息：");
-		request(getXml("text/plain;charset=UTF-8", "geo:50.7311865,7.0914591;crs=gcj02;u=10;rcs-l=Qingfeng%20Steamed%20Dumpling%20Shop%20%F0%9F%8D%9A"));
+		sendMessage(getXml("text/plain;charset=UTF-8", "geo:50.7311865,7.0914591;crs=gcj02;u=10;rcs-l=Qingfeng%20Steamed%20Dumpling%20Shop%20%F0%9F%8D%9A"));
 	}
 	
 	//10、下发群发消息
-	void getGroupTextXml() {
+	void requestGroupTextXml() {
 		System.out.println("下发群发纯文本消息：");
-		String xml10 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
-			"<msg:outboundMessageRequest" + 
-			"    xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">" + 
-			"    <Address>tel:+8619585550104</Address>" + 
-			"    <destinationAddress>tel:+8619585550104</destinationAddress>" + 
-			"    <destinationAddress>tel:+8619585550105</destinationAddress>" + 
-			"    <destinationAddress>tel:+8619585550106</destinationAddress>" + 
-			"    <senderAddress>sip:12599@botplatform.rcs.chinaunicom.com</senderAddress>" + 
-			"    <senderName>MyName</senderName>" + 
-			"    <outboundIMMessage>" + 
-			"        <subject>hello from the rest of us!</subject>" + 
-			"        <contentType>text/plain</contentType>" + 
-			"        <conversationID>" + UUID.randomUUID().toString() + "</conversationID>" + 
-			"        <contributionID>" + UUID.randomUUID().toString() + "</contributionID>" + 
-			"        <serviceCapability>" + 
-			"            <capabilityId>ChatbotSA</capabilityId>" + 
-			"            <version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>" + 
-			"        </serviceCapability>" + 
-			"        <messageId>" + UUID.randomUUID().toString() + "</messageId>" + 
-			"        <bodyText>hello world</bodyText>" + 
-			"    </outboundIMMessage>" + 
-			"    <clientCorrelator>567895</clientCorrelator>" + 
-			"</msg:outboundMessageRequest>";
-		request(xml10);
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+				"<msg:outboundMessageRequest xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">\r\n" + 
+				"    <address>tel:+8618611886117</address>\r\n" + 
+				"    <destinationAddress>tel:+8618611886117</destinationAddress>\r\n" + 
+				"    <destinationAddress>tel:+8619585550105</destinationAddress>\r\n" + 
+				"    <destinationAddress>tel:+8619585550106</destinationAddress>\r\n" + 
+				"    <senderAddress>sip:10655210001@botplatform.rcs.chinaunicom.cn</senderAddress>\r\n" + 
+				"    <senderName>MyName</senderName>\r\n" + 
+				"    <outboundIMMessage>\r\n" + 
+				"        <subject>hello world</subject>\r\n" + 
+				"        <contentType>text/plain</contentType>\r\n" + 
+				"        <conversationID>b1067eb2-1982-4a52-b487-c1683d19e6a2</conversationID>\r\n" + 
+				"        <contributionID>d86cf5e9-f54b-46fa-aa5b-9a29e22567af</contributionID>\r\n" + 
+				"        <serviceCapability>\r\n" + 
+				"            <capabilityId>ChatbotSA</capabilityId>\r\n" + 
+				"            <version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>\r\n" + 
+				"        </serviceCapability>\r\n" + 
+				"        <bodyText><![CDATA[hello,你好]]></bodyText>\r\n" + 
+				"        <reportRequest>Delivered</reportRequest>\r\n" + 
+				"        <reportRequest>Displayed</reportRequest>\r\n" + 
+				"        <reportRequest>Failed</reportRequest>\r\n" + 
+				"    </outboundIMMessage>\r\n" + 
+				"    <clientCorrelator>1102365</clientCorrelator>\r\n" + 
+				"</msg:outboundMessageRequest>";
+		sendMessage(xml);
 	}
 	
-	//11、下发待回落UP1.0消息
-	void getUpFileXml() {
-		System.out.println("下发带回落的文件消息：");
-		String xml11 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
-			"<msg:outboundMessageRequest" + 
-			"    xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">" + 
-			"    <address>tel:+86" + phone + "</address>" + 
-			"    <destinationAddress>tel:+86" + phone + "</destinationAddress>" + 
-			"    <senderAddress>sip:12599@botplatform.rcs.chinaunicom.com</senderAddress>" + 
-			"    <senderName>MyName</senderName>" + 
-			"    <outboundIMMessage>" + 
-			"        <subject>hello from the rest of us!</subject>" + 
-			"        <contentType> application/vnd.gsma.botmessage.v1.0+json</contentType>" + 
-			"        <conversationID>" + UUID.randomUUID().toString() + "</conversationID>" + 
-			"        <contributionID>" + UUID.randomUUID().toString() + "</contributionID>" + 
-			"        <serviceCapability>" + 
-			"            <capabilityId> ChatbotSA </capabilityId>" + 
-			"            <version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>" + 
-			"        </serviceCapability>" + 
-			"        <messageId>" + UUID.randomUUID().toString() + "</messageId>" + 
-			"        <bodyText>" + 
-			"            <![CDATA[" + 
-			"{" + 
-			"  \"message\": {" + 
-			"    \"generalPurposeCard\": {" + 
-			"      \"layout\": {" + 
-			"        \"cardOrientation\": \"HORIZONTAL\"," + 
-			"        \"imageAlignment\": \"LEFT\"" + 
-			"      }," + 
-			"      \"content\": {" + 
-			"        \"media\": {" + 
-			"          \"mediaUrl\": \"https://cdn.server/path/media.mp4\"," + 
-			"          \"mediaContentType\": \"video/mp4\"," + 
-			"          \"thumbnailUrl\": \"https://cdn.server/path/media.png\"," + 
-			"          \"thumbnailContentType\": \"image/png\"," + 
-			"          \"height\": \"MEDIUM_HEIGHT\"" + 
-			"        }," + 
-			"        \"title\": \"This is a single rich card.\"," + 
-			"        \"description\": \"This is the description of the rich card. It's the first field that will be truncated if it exceeds the maximum width or height of a card.\"" + 
-			"      }" + 
-			"    }" + 
-			"  }" + 
-			"}" + 
-			"			 ]]>" + 
-			"        </bodyText>" + 
-			"        <fallbackContentType>application/vnd.gsma.rcs-ft-http+xml</fallbackContentType>" + 
-			"        <rcsBodyText>" + 
-			"            <![CDATA[" + 
-			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + 
-			"<file" + 
-			"    xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">" + 
-			"    <file-info type=\"thumbnail\">" + 
-			"        <file-size>7427</file-size>" + 
-			"        <content-type>image/jpeg</content-type>" + 
-			"        <data url=\"https://ftcontentserver.rcs.mnc123.mcc456.pub.3gppnetwork.org/ftsf58cdb29d1-a3d3-427c-a8a4-a496759fbf6b\" until=\"2017-04-25T12:17:07Z\"/>" + 
-			"        <data localurl=\"http://192.168.0.1/ftsf58cdb29d1-a3d3-427c-a8a4-a496759fbf6b\" until=\"2017-04-25T12:17:07Z\"/>" + 
-			"    </file-info>" + 
-			"    <file-info type=\"file\">" + 
-			"        <file-size>183524</file-size>" + 
-			"        <file-name>DSC_379395051.JPG</file-name>" + 
-			"        <content-type>image/jpeg</content-type>" + 
-			"        <data url=\"https://ftcontentserver.rcs.mnc123.mcc456.pub.3gppnetwork.org/ftsf0d5ea6d1-a94c-2-9634-2d90244d3e8e\" until=\"2017-04-25T12:17:07Z\"/>" + 
-			"        <data localurl=\"http://192.168.0.1/ftsf-0d5ea6d1-a94c-2-9634-2d90244d3e8e\" until=\"2017-04-25T12:17:07Z\"/>" + 
-			"    </file-info>" + 
-			"</file>" + 
-			"            ]]>" + 
-			"        </rcsBodyText>" + 
-			"    </outboundIMMessage>" + 
-			"    <clientCorrelator>567895</clientCorrelator>" + 
-			"</msg:outboundMessageRequest>";
-		request(xml11);
+	String getUp10File() {
+		String xml = getXml("application/vnd.gsma.botmessage.v1.0+json", getDkp());
+		
+		String up10 = "<fallbackSupported>true</fallbackSupported>\r\n" +
+				"<shortMessageSupported>true</shortMessageSupported>\r\n" + 
+				"<reportRequest>SMS</reportRequest>\r\n" +
+				"<fallbackContentType>application/vnd.gsma.rcs-ft-http+xml</fallbackContentType>\r\n" + 
+				"<rcsBodyText><![CDATA[" + 
+				getFile() + 
+				"]]></rcsBodyText>\r\n";
+		return xml.replace("repace-rcsBody-replace", up10);
 	}
 	
-	private static String getFile() {
-		File file = new File("C:\\Users\\gongxiaoliang\\Documents\\timg.jpg");
+	//11、下发待回落UP1.0文件消息
+	String requestUp10FileXml() {
+		System.out.println("下发待回落up1.0文件消息：");
+		return sendMessage(getUp10File());
+	}
+	
+	String getUp10Text() {
+		String xml = getXml("text/plain","hello,你好");
+		String up10 = "<fallbackContentType>text/plain</fallbackContentType>\r\n" + 
+				"<rcsBodyText><![CDATA[测试回落up1.0-hello]]></rcsBodyText>\r\n";
+//		return getXml("application/vnd.gsma.botmessage.v1.0+json", dkp).replace("repace-rcsBody-replace", up10);
+//		return getXml("application/vnd.gsma.rcs-ft-http+xml", getFile()).replace("repace-rcsBody-replace", up10);
+		return xml.replace("repace-rcsBody-replace", up10);
+	}
+	
+	//11-2、下发待回落UP1.0文本消息
+	String requestUp10TextXml() {
+		System.out.println("下发待回落up1.0文本消息：");
+		return sendMessage(getUp10Text());
+	}
+	
+	private static String getFile(String thumbnailUrl,String thumbnailType,String thumbnailSize,String fileUrl,String fileType,String fileSize,String fileName) {
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
-				"<file xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">\r\n" + 
-				"    <file-info type=\"thumbnail\">\r\n" +
-				"        <file-size>" + file.length() + "</file-size>\r\n" + 
-				"        <content-type>image/jpeg</content-type>\r\n" +
-				"        <data url=\"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608208202035&di=264a57f1685fa99847a4841dd7aec9b0&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F25%2F99%2F19300000421423134190997943822.jpg\" until=\"2017-04-25T12:17:07Z\"/>\r\n" + 
+				"<file xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">\r\n";
+		if(null != thumbnailUrl && thumbnailUrl.length() > 1) {
+			xml += "    <file-info type=\"thumbnail\">\r\n" +
+					"        <file-size>" + thumbnailSize + "</file-size>\r\n" + 
+					"        <content-type>" + thumbnailType + "</content-type>\r\n" +
+					"        <data url=\"" + thumbnailUrl + "\" until=\"2021-04-25T12:17:07Z\"/>\r\n" + 
+					"    </file-info>\r\n";
+		}
+		xml += "    <file-info type=\"file\">\r\n" + 
+				"        <file-size>" + fileSize + "</file-size>\r\n" + 
+				"        <file-name>" + fileName + "</file-name>\r\n" +
+				"        <content-type>" + fileType + "</content-type>\r\n" + 
+				"        <data url=\"" + fileUrl + "\" until=\"2021-04-25T12:17:07Z\"/>\r\n" + 
 				"    </file-info>\r\n" +
-				"    <file-info type=\"file\">\r\n" + 
-				"        <file-size>" + file.length() + "</file-size>\r\n" + 
-				"        <file-name>timg.jpg</file-name>\r\n" +
-				"        <content-type>image/jpeg</content-type>\r\n" + 
-				"        <data url=\"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608208202035&di=264a57f1685fa99847a4841dd7aec9b0&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F25%2F99%2F19300000421423134190997943822.jpg\"/>\r\n" + 
-				"    </file-info>\r\n" +
-				"</file>\r\n";
+				"</file>";
 		return xml;
+	}
+	
+	String getSms() {
+		String dkp = getDkp();
+		
+		String sms = "<shortMessageSupported>true</shortMessageSupported>\r\n" + 
+				"<reportRequest>SMS</reportRequest>\r\n"
+				+ "<smsBodyText><![CDATA[" + 
+				"测试转短信内容" + 
+				"]]></smsBodyText>\r\n";
+		
+		return getXml("application/vnd.gsma.botmessage.v1.0+json", dkp).replace("repace-rcsBody-replace", sms);
+	}
+	
+	//12、下发待回落短信消息
+	String requestSmsTextXml() {
+		System.out.println("下发待回落短信消息：");
+		return sendMessage(getSms());
 	}
 	
 	public String getXml(String contentType,String bodyText) {
@@ -405,27 +529,34 @@ public class TestShlt extends AbstractDemo{
 				+ "<msg:outboundMessageRequest xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">\r\n"
 				+ "    <address>tel:+86" + phone + "</address>\r\n"
 				+ "    <destinationAddress>tel:+86" + phone + "</destinationAddress>\r\n"
-				+ "    <senderAddress>" + spi + "</senderAddress>\r\n"
+				+ "    <senderAddress>" + getchatbotSip() + "</senderAddress>\r\n"
 				+ "    <senderName>MyName</senderName>\r\n"
 				+ "    <outboundIMMessage>\r\n"
 				+ "        <subject>hello world</subject>\r\n"
 				+ "        <contentType>hello,contenttype<o>k</contentType>\r\n"
-				+ "        <destinationTerminal>Native</destinationTerminal>\r\n"
+//				+ "        <destinationTerminal>Native</destinationTerminal>\r\n"
 				+ "        <conversationID>" + UUID.randomUUID().toString() + "</conversationID>\r\n"
 				+ "        <contributionID>" + UUID.randomUUID().toString() + "</contributionID>\r\n"
 				+ "        <serviceCapability>\r\n"
 				+ "            <capabilityId>ChatbotSA</capabilityId>\r\n"
 				+ "            <version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>\r\n"
 				+ "        </serviceCapability>\r\n"
-				+ "        <messageId>" + UUID.randomUUID().toString() + "</messageId>\r\n"
-				+ "        <bodyText>\r\n"
-				+ "<![CDATA[\r\n"
+//				+ "        <messageId>" + UUID.randomUUID().toString() + "</messageId>\r\n"
+				+ "        <bodyText><![CDATA["
 				+ "hello,bodytext><o><"
-				+ "]]>\r\n"
-				+ "        </bodyText>\r\n"
+				+ "]]></bodyText>\r\n"
+				+ "        <reportRequest>Delivered</reportRequest>\r\n"
+				+ "        <reportRequest>Displayed</reportRequest>\r\n" 
+				+ "        <reportRequest>Failed</reportRequest>\r\n"
+				+ "        <reportRequest>Sent</reportRequest>\r\n"
+				+ "repace-rcsBody-replace"
 				+ "    </outboundIMMessage>\r\n"
 				+ "    <clientCorrelator>1102365</clientCorrelator>\r\n"
 				+ "</msg:outboundMessageRequest>";
 		return xml.replace("hello,bodytext><o><", bodyText).replace("hello,contenttype<o>k",contentType);
+	}
+	
+	protected String getchatbotUri() {
+		return chatbotId + "@botplatform.rcs.chinaunicom.cn";
 	}
 }

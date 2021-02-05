@@ -1,0 +1,8 @@
+2021-01-27 17:59:32 : null
+2021-01-27 17:59:53 : {"code":20002,"message":"serviceDescription参数不能为空"}
+2021-01-27 18:00:40 : {"code":20002,"message":"serviceDescription长度不超过150"}
+2021-01-27 18:01:36 : {"code":20002,"message":"serviceDescription长度不超过150"}
+2021-01-27 18:02:32 : {"code":20002,"message":"请输入正确的纬度，经纬度填写需同时填写，支持精确到小数点后3位，经度范围：-180° ～180°，纬度范围：-90° ～90°"}
+2021-01-27 18:02:56 : {"code":20002,"message":"上传参数异常，请检查category参数"}
+2021-01-27 18:03:16 : {"code":46005,"message":"当前csp客户状态为不可用"}
+2021-01-28 10:39:03 : {"code":0,"data":{"accessTagNo":"a7d256eab9cf45a8be92972f6d78cf96"},"message":"success"}

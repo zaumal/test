@@ -4,6 +4,74 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestTxbjydChatbot {
+	public static List<ChatbotInfo> getChatbots2() {
+		List<ChatbotInfo> list = new ArrayList<>();
+		//京东健康
+		ChatbotInfo c1 = new ChatbotInfo();
+		c1.chatbotId = "sip:1252004011111443@botplatform.rcs.chinamobile.com"; 
+		c1.appId = "1252004011111443"; 
+		c1.appKey = "1252004011111443"; 
+		c1.password = "63R2,z8^q=GTvp";
+		list.add(c1);
+		
+		//京东电器
+		ChatbotInfo c2 = new ChatbotInfo();
+		c2.chatbotId = "sip:1252004011111444@botplatform.rcs.chinamobile.com"; 
+		c2.appId = "1252004011111444"; 
+		c2.appKey = "1252004011111444"; 
+		c2.password = "M0RI<e0M?o4AJ";
+		list.add(c2);
+		
+		//京东手机
+		ChatbotInfo c3 = new ChatbotInfo();
+		c3.chatbotId = "sip:1252004011111445@botplatform.rcs.chinamobile.com"; 
+		c3.appId = "1252004011111445"; 
+		c3.appKey = "1252004011111445"; 
+		c3.password = "+X^$Q%L:i24>\"qa1p9";
+		list.add(c3);
+		
+		//京东旅游
+		ChatbotInfo c4 = new ChatbotInfo();
+		c4.chatbotId = "sip:1252004011111446@botplatform.rcs.chinamobile.com"; 
+		c4.appId = "1252004011111446"; 
+		c4.appKey = "1252004011111446"; 
+		c4.password = "Su64wLH&TeY6qaJ&^[";
+		list.add(c4);
+		
+		//燕之屋
+		ChatbotInfo c5 = new ChatbotInfo();
+		c5.chatbotId = "sip:1252004011111447@botplatform.rcs.chinamobile.com"; 
+		c5.appId = "1252004011111447"; 
+		c5.appKey = "1252004011111447"; 
+		c5.password = "cY\\92?LF3c1&r\\B";
+		list.add(c5);
+		
+		//网龙教育
+		ChatbotInfo c6 = new ChatbotInfo();
+		c6.chatbotId = "sip:1252004011111448@botplatform.rcs.chinamobile.com"; 
+		c6.appId = "1252004011111448"; 
+		c6.appKey = "1252004011111448"; 
+		c6.password = "9nsc=4~6'7T30D:i";
+		list.add(c6);
+		
+		//会面
+		ChatbotInfo c7 = new ChatbotInfo();
+		c7.chatbotId = "sip:1252004011111450@botplatform.rcs.chinamobile.com"; 
+		c7.appId = "1252004011111450"; 
+		c7.appKey = "1252004011111450"; 
+		c7.password = "2S;jFtYzc0Nx";
+		list.add(c7);
+		
+		//神州英才
+		ChatbotInfo c8 = new ChatbotInfo();
+		c8.chatbotId = "sip:1252004011111444@botplatform.rcs.chinamobile.com"; 
+		c8.appId = "1252004011111444"; 
+		c8.appKey = "1252004011111444"; 
+		c8.password = "jM0YT5>yE7%[";
+		list.add(c8);
+		
+		return list;
+	}
 	
 	public static List<ChatbotInfo> getChatbots() {
 		List<ChatbotInfo> list = new ArrayList<>();
@@ -75,10 +143,10 @@ public class TestTxbjydChatbot {
 		//镁伽机器人5G消息
 		ChatbotInfo c9 = new ChatbotInfo();
 		list.add(c9);
-		c8.chatbotId = "sip:125200401111841@botplatform.rcs.chinamobile.com"; 
-		c8.appId = "125200401111841"; 
-		c8.appKey = "125200401111841"; 
-		c8.password = "3:=8u53Te&27";
+		c9.chatbotId = "sip:125200401111841@botplatform.rcs.chinamobile.com"; 
+		c9.appId = "125200401111841"; 
+		c9.appKey = "125200401111841"; 
+		c9.password = "3:=8u53Te&27";
 		
 		//梯影传媒5G消息
 		ChatbotInfo c10 = new ChatbotInfo();

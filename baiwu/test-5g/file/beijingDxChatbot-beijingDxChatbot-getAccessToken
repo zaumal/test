@@ -1,0 +1,25 @@
+2021-01-28 17:04:30 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-01-28 17:24:19 : <html>
+<head><title>400 Bad Request</title></head>
+<body bgcolor="white">
+<center><h1>400 Bad Request</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2021-01-28 17:28:30 : <html>
+<head><title>400 Bad Request</title></head>
+<body bgcolor="white">
+<center><h1>400 Bad Request</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+2021-01-28 17:28:51 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-01-28 17:30:40 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-01-28 20:20:28 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-01-29 10:06:29 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-01-29 11:06:44 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-01-29 11:33:35 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-01-29 11:39:28 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-01-29 11:43:42 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}

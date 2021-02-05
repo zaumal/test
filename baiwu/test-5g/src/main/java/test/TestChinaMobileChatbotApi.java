@@ -10,9 +10,11 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -196,10 +198,10 @@ public class TestChinaMobileChatbotApi {
 //	private static String password = "1Ab7LP4aIQC@xMmDU5rA";
 	
 	//中飞艾维5G消息 
-	private String chatbotId = "sip:125200401111833@botplatform.rcs.chinamobile.com"; 
-	private static String appId = "125200401111833"; 
-	private String appKey = "125200401111833"; 
-	private static String password = "lxB;6O(2ST|J~3b`qw";
+//	private String chatbotId = "sip:125200401111833@botplatform.rcs.chinamobile.com"; 
+//	private static String appId = "125200401111833"; 
+//	private String appKey = "125200401111833"; 
+//	private static String password = "lxB;6O(2ST|J~3b`qw";
 	
 	//光鉴科技5G消息
 //	private String chatbotId = "sip:125200401111834@botplatform.rcs.chinamobile.com"; 
@@ -224,7 +226,7 @@ public class TestChinaMobileChatbotApi {
 //	private static String appId = "125200401111837"; 
 //	private String appKey = "125200401111837"; 
 //	private static String password = "(ec_5v@S9EQ87";
-	
+//	
 	//标贝科技5G消息
 //	private String chatbotId = "sip:125200401111838@botplatform.rcs.chinamobile.com"; 
 //	private static String appId = "125200401111838"; 
@@ -302,7 +304,14 @@ public class TestChinaMobileChatbotApi {
 //	private static String appId = "125200401111806"; 
 //	private String appKey = "125200401111806"; 
 //	private static String password = "KaM\"7TuO";
+	
+	//百世优派
+	private static String chatbotId = "sip:125200401111528@botplatform.rcs.chinamobile.com";
+	private static String appId = "125200401111528";
+	private static String appKey = "125200401111528"; 
+	private static String password = "O{18;T6vfgy^7";	
 
+	
 	/**
 	 *创建请求
 	 *
@@ -330,20 +339,45 @@ public class TestChinaMobileChatbotApi {
 	}
 	
 	public static void main2(String[] args) {
+		Map<ChatbotInfo,String> messageIds = new LinkedHashMap<>();
 		TestChinaMobileChatbotApi manager = new TestChinaMobileChatbotApi();
 		String mobile = "15811491455";
 		TestTxbjydChatbot.getChatbots().forEach(x -> {
 			try {
 				String token = manager.getAccessToken(x.password);
-
-//				if("125200401111835".equals(x.appId)) {
-//					String date = "Tue, 29 Dec 2020 16:43:50 GMT";
-//					String authorization = manager.getAuthentication(x.appId,token,date);
-//					System.out.println(authorization);
-//				}
+//				String messageId = manager.testSendGroupTextMessage(x.appId,token,mobile);
+//				messageIds.put(x,messageId);
+//				manager.testSendGroupTextSuggestionsMessage(x.appId,token,mobile);
 				
-				manager.testSendGroupTextMessage(x.appId,token,mobile);
+//				manager.testSendGroupFileMessage(x.appId,token,mobile);
+				//群发带悬浮菜单的文件消息
+				manager.testSendGroupFileSuggestionsMessage(x.appId,token,mobile);
+				//群发单卡片消息
+//				manager.testSendGroupSingleCardMessage(x.appId,token,mobile);
+				//群发带悬浮菜单的单卡片消息
+//				manager.testSendGroupSingleCardSuggestionsMessage(x.appId,token,mobile);
+				//群发多卡片消息
+//				manager.testSendGroupMultipleCardMessage(x.appId,token,mobile);
+				//群发带悬浮菜单的多卡片消息
+//				manager.testSendGroupMultipleCardSuggestionsMessage(x.appId,token,mobile);
+				
+				Thread.sleep(2000);
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		
+		try {
+			Thread.sleep(1000*30);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		messageIds.forEach((x,y) -> {
+			try {
+				String token = manager.getAccessToken(x.password);
+				manager.testSendRevokeMessage(x.appId, token, mobile, y);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -360,36 +394,41 @@ public class TestChinaMobileChatbotApi {
 		String token = manager.getAccessToken(password);
 		//上传文件
 		//图片文件上传
-		File file1 = new File("file/image1.jpg");
-		File thumbnail1 = new File("file/image1-thumbnail.png");
-		manager.uploadFile(token,file1,thumbnail1);
+//		File file1 = new File("file/image1.jpg");
+//		File thumbnail1 = new File("file/image1-thumbnail.png");
+//		manager.uploadFile(appId,token,file1,thumbnail1);
 		//音频文件上传
-//		File file2 = new File("file/audio1.wav");
+//		File file2 = new File("file/audio2.amr");
 //		File thumbnail2 = new File("file/audio1-thumbnail.png");
-//		manager.uploadFile(token,file2,thumbnail2);
+//		manager.uploadFile(appId,token,file2,thumbnail2);
 		//视频文件上传
 //		File file3 = new File("file/video1.mp4");
 //		File thumbnail3 = new File("file/video1-thumbnail.png");
-//		manager.uploadFile(token,file3,thumbnail3);
-		String mobile = "15811491455";
+//		manager.uploadFile(appId,token,file3,thumbnail3);
 		
+//		manager.deleteFile(appId, token, "5c2bb25af4df44a34a9843df88e7b731d");
+		
+		String mobile = "15811491455";
 //		String mobile = "15132291613";
 		//群发文本消息
-//		manager.testSendGroupTextMessage(appId,token,mobile);
+		manager.testSendGroupTextMessage(appId,token,mobile);
 		//群发带悬浮菜单的文本消息
 //		manager.testSendGroupTextSuggestionsMessage(token,mobile);
 		//群发文件消息
-//		manager.testSendGroupFileMessage(token,mobile);
+//		String messageId = manager.testSendGroupFileMessage(appId,token,mobile);
 		//群发带悬浮菜单的文件消息
 //		manager.testSendGroupFileSuggestionsMessage(token,mobile);
 		//群发单卡片消息
 //		manager.testSendGroupSingleCardMessage(token,mobile);
 		//群发带悬浮菜单的单卡片消息
-//		manager.testSendGroupSingleCardSuggestionsMessage(token,mobile);
+//		manager.testSendGroupSingleCardSuggestionsMessage(appId,token,mobile);
 		//群发多卡片消息
 //		manager.testSendGroupMultipleCardMessage(token,mobile);
 		//群发带悬浮菜单的多卡片消息
 //		manager.testSendGroupMultipleCardSuggestionsMessage(token,mobile);
+		
+//		Thread.sleep(1000*60*2);
+//		manager.testSendRevokeMessage(appId, token, mobile, messageId);
 	}
 	
 	/**  
@@ -569,6 +608,10 @@ public class TestChinaMobileChatbotApi {
 		return "";
 	}
 	
+	public String getChatBotUri(String chatbotId) {
+		return "sip:" + chatbotId + "@botplatform.rcs.chinamobile.com";
+	}
+	
 	//Chatbot 可调用本接口 将图片、音频 、视频等文件 提前上传到5G消息业务平台。 支持发送图片、音频 、视素材 和缩略图 。文件大小要求如下： 
 	//图片（ image）: 2M，支持 JPG/JPEG 、PEG格式；
 	//音频 （audio）： 5M，播放时长不超过 90s，AMR、MP3 、M4A格式 ；
@@ -635,7 +678,7 @@ public class TestChinaMobileChatbotApi {
 	 * @throws Exception
 	 */
 	
-	  public String uploadFile(String token, File file, File thumbnail) throws Exception {
+	  public String uploadFile(String appId,String token, File file, File thumbnail) throws Exception {
 		  //http://{fileServerRoot}/Content?hash=sha256<sha256_value>&File-name=<file name>&File-size=<file size>
 		  StringBuilder builder = new StringBuilder();
 		  builder
@@ -648,14 +691,14 @@ public class TestChinaMobileChatbotApi {
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
-		  String authorization = getAuthentication(token,date);
+		  String authorization = getAuthentication(appId,token,date);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.add("Date", date);
-		  headers.add("X-3GPP-Intended-Identity", chatbotId);
+		  headers.add("X-3GPP-Intended-Identity", getChatBotUri(appId));
 		  
 		  headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-		  headers.add("User-Agent", "SP/"+chatbotId);
+		  headers.add("User-Agent", "SP/"+getChatBotUri(appId));
 		  headers.add("Terminal-type", "Chatbot");
 		  MultiValueMap<String, Object> map= new LinkedMultiValueMap<String, Object>();
 		  map.add("Thumbnail",Thumbnail);
@@ -677,6 +720,44 @@ public class TestChinaMobileChatbotApi {
 		  return "code:"+cdoe+",msg:"+msg; 
 	  }
 	  
+	  
+	  public String deleteFile(String appId,String token, String tid) throws Exception {
+		  //http://{fileServerRoot}/Content?hash=sha256<sha256_value>&File-name=<file name>&File-size=<file size>
+		  StringBuilder builder = new StringBuilder();
+		  builder
+		  .append(fileserverroot).append("/")
+		  .append("Content");
+//		  .append(GetFileSHA256.getFileSHA1(file));
+		  String url = builder.toString();
+		  long time = System.currentTimeMillis();
+		  String date = long2gmt(time);
+		  System.out.println(date);
+		  String authorization = getAuthentication(appId,token,date);
+		  HttpHeaders headers = new HttpHeaders();
+		  headers.add("Authorization", "Basic "+authorization);
+		  headers.add("Date", date);
+		  headers.add("X-3GPP-Intended-Identity", getChatBotUri(appId));
+		  headers.add("tid", tid);
+		  
+		  headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		  headers.add("User-Agent", "SP/"+getChatBotUri(appId));
+		  headers.add("Terminal-type", "Chatbot");
+		  
+		  HttpEntity<String> request = new HttpEntity<String>("", headers);
+		  
+		  RestTemplate restTemplate = getRestTemplate();
+		  
+		  ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, request, String.class);
+		  
+		  System.out.println(response.getStatusCodeValue());
+		  System.out.println(response.getHeaders());
+		  System.out.println(response.getBody()); 
+		  JSONObject json = JSONObject.parseObject(response.getBody());
+		  System.out.println(json);
+		  String cdoe = json.getString("cdoe");
+		  String msg = json.getString("msg");
+		  return "code:"+cdoe+",msg:"+msg; 
+	  }
 	  
 	  
 	/**
@@ -736,17 +817,18 @@ public class TestChinaMobileChatbotApi {
 	 * @throws Exception
 	 */
 	
-	  public String deleteUploadFile(String token) throws Exception {
+	  public String deleteUploadFile(String appId,String token) throws Exception {
 		  //https://{serverRoot}/bot/{apiVersion}/{chatbotId}/medias/delete
 		  
 //		  String fileUrl = uploadFile(token, false , new File("F:/rcs/1.jpg"));
-		  String fileUrl = "http://124.126.120.102/perm/src/2020071718/b5e/view/10,3c3504f70ff5ba5fe13e.jpg";
+//		  String fileUrl = "http://124.126.120.102/perm/src/2020071718/b5e/view/10,3c3504f70ff5ba5fe13e.jpg";
+		  String fileUrl = "https://gz01ft.sbc.rcs.chinamobile.com:10001/s/12311415401132320460205002FD.jpg";
 		  
 		  StringBuilder builder = new StringBuilder(); 
 		  builder.append(serverRoot)
 		  .append("/").append("bot")
 		  .append("/").append(apiVersion)
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("medias")
 		  .append("/").append("delete");
 		  
@@ -787,14 +869,13 @@ public class TestChinaMobileChatbotApi {
 		  .append("/").append("group")
 		  .append("/").append(apiVersion) 
 		  .append("/").append("outbound")
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("requests");
 		  String url = builder.toString();
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
 		  String authorization = getAuthentication(appId,token,date);
-		  System.out.println("Basic "+authorization);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.setContentType(MediaType.APPLICATION_XML);
@@ -829,7 +910,7 @@ public class TestChinaMobileChatbotApi {
 		  System.out.println(response.getBody());
 		  
 		  JSONObject json = JSONObject.parseObject(response.getBody()); 
-		  return json.getString("code"); 
+		  return json.getString("messageId"); 
 	  }
 	  
 	  /**
@@ -839,7 +920,7 @@ public class TestChinaMobileChatbotApi {
 	   * @return 返回操作结果
 	   * @throws Exception
 	   */
-	  public String testSendGroupTextSuggestionsMessage(String token,String mobile) throws Exception {
+	  public String testSendGroupTextSuggestionsMessage(String appId,String token,String mobile) throws Exception {
 		  //http://{serverRoot}/messaging/group/{apiVersion}/outbound/{chatbotURI}/requests
 		  StringBuilder builder = new StringBuilder(); 
 		  builder.append(serverRoot)
@@ -847,13 +928,13 @@ public class TestChinaMobileChatbotApi {
 		  .append("/").append("group")
 		  .append("/").append(apiVersion) 
 		  .append("/").append("outbound")
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("requests");
 		  String url = builder.toString();
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
-		  String authorization = getAuthentication(token,date);
+		  String authorization = getAuthentication(appId,token,date);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.setContentType(MediaType.APPLICATION_XML);
@@ -938,6 +1019,49 @@ public class TestChinaMobileChatbotApi {
 		  return json.getString("code"); 
 	  }
 	  
+	  
+	  public String testSendRevokeMessage(String appId,String token,String mobile,String tid) throws Exception {
+		  //http://{serverRoot}/messaging/group/{apiVersion}/outbound/{chatbotURI}/requests
+		  StringBuilder builder = new StringBuilder(); 
+		  builder.append(serverRoot)
+		  .append("/").append("messaging")
+//		  .append("/").append("group")
+		  .append("/").append(apiVersion) 
+		  .append("/").append("outbound")
+		  .append("/").append(getChatBotUri(appId))
+		  .append("/").append("requests")
+		  .append("/").append(tid)
+		  .append("/").append("status");
+		  System.out.println(tid);
+		  String url = builder.toString();
+		  long time = System.currentTimeMillis();
+		  String date = long2gmt(time);
+		  System.out.println(date);
+		  String authorization = getAuthentication(appId,token,date);
+		  HttpHeaders headers = new HttpHeaders();
+		  headers.add("Authorization", "Basic "+authorization);
+		  headers.setContentType(MediaType.APPLICATION_XML);
+		  headers.add("Date", date);
+		  
+		  String body = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+		  		"<msg:messageStatusReport xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">\r\n" + 
+		  		"  <status>RevokeRequested</status>\r\n" + 
+		  		"  <address>tel:+86" + mobile + "</address>\r\n" + 
+		  		"</msg:messageStatusReport>\r\n" + 
+		  		"";
+		  
+		  HttpEntity<String> request = new HttpEntity<String>(body, headers);
+		  RestTemplate restTemplate = getRestTemplate();
+		  
+		  ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, request, String.class);
+		  System.out.println(response.getStatusCodeValue());
+		  System.out.println(response.getHeaders());
+		  System.out.println(response.getBody());
+		  
+		  JSONObject json = JSONObject.parseObject(response.getBody()); 
+		  return json.getString("messageId"); 
+	  }
+	  
 	  /**
 	   * chatbot发送消息（群发消息）接口（纯文件消息）
 	   * 
@@ -945,7 +1069,7 @@ public class TestChinaMobileChatbotApi {
 	   * @return 返回操作结果
 	   * @throws Exception
 	   */
-	  public String testSendGroupFileMessage(String token,String mobile) throws Exception {
+	  public String testSendGroupFileMessage(String appId,String token,String mobile) throws Exception {
 		  //http://{serverRoot}/messaging/group/{apiVersion}/outbound/{chatbotURI}/requests
 		  StringBuilder builder = new StringBuilder(); 
 		  builder.append(serverRoot)
@@ -953,52 +1077,54 @@ public class TestChinaMobileChatbotApi {
 		  .append("/").append("group")
 		  .append("/").append(apiVersion) 
 		  .append("/").append("outbound")
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("requests");
 		  String url = builder.toString();
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
-		  String authorization = getAuthentication(token,date);
+		  String authorization = getAuthentication(appId,token,date);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.setContentType(MediaType.APPLICATION_XML);
 		  headers.add("Date", date);
 		  //图片
-//		  String body = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" + 
-//				  		"<msg:outboundMessageRequest xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">\r\n" + 
-//				  		"  <address>tel:+86"+mobile+"</address>\r\n" + 
-//				  		"  <destinationAddress>tel:+86"+mobile+"</destinationAddress>\r\n" + 
-//				  		"  <senderAddress>"+chatbotId+"</senderAddress>\r\n" + 
-//				  		"<outboundIMMessage>\r\n" + 
-//				  		"<conversationID>"+UUID.randomUUID().toString()+"</conversationID>\r\n" + 
-//				  		"<contributionID>"+UUID.randomUUID().toString()+"</contributionID>\r\n" + 
-//				  		"<contentType>application/vnd.gsma.rcs-ft-http+xml</contentType>\r\n" +  
-//				  		"<serviceCapability>\r\n" + 
-//				  		"<capabilityId>ChatbotSA</capabilityId>\r\n" + 
-//				  		"<version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>\r\n" + 
-//				  		"</serviceCapability>\r\n" + 
-//				  		"<bodyText><![CDATA[\r\n" + 
-//				  		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
-//				  		"	<file xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">\r\n" + 
-//				  		"		<file-info type=\"thumbnail\">\r\n" + 
-//				  		"		<file-size>1132</file-size>\r\n" + 
-//				  		"		<content-type>image/png</content-type>\r\n" + 
-//				  		"		<data url=\"https://gz01ft.sbc.rcs.chinamobile.com:10010/s/11181626401132290261087300TD\" until=\"2020-11-25T16:26:40Z\"/>\r\n" + 
-//				  		"	</file-info>\r\n" + 
-//				  		"	<file-info type=\"file\">\r\n" + 
-//				  		"		<file-size>3246</file-size>\r\n" + 
-//				  		"		<file-name>64cfb45b5891babd89556c06ca2d9c8e.png</file-name>\r\n" + 
-//				  		"		<content-type>image/png</content-type>\r\n" + 
-//				  		"		<data url=\"https://gz01ft.sbc.rcs.chinamobile.com:10010/s/11181626401132290261087300FD.png\" until=\"2020-11-25T16:26:40Z\"/>\r\n" + 
-//				  		"	</file-info>\r\n" + 
-//				  		"</file>\r\n" + 
-//				  		"]]></bodyText>\r\n" + 
-//				  		"</outboundIMMessage>\r\n" + 
-//				  		"        <reportRequest>Delivered</reportRequest>\r\n" + 
-//				  		"        <reportRequest>Displayed</reportRequest>\r\n" + 
-//				  		"        <reportRequest>Failed</reportRequest>\r\n" + 
-//				  		"</msg:outboundMessageRequest>";
+		  String body = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" + 
+				  		"<msg:outboundMessageRequest xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">\r\n" + 
+				  		"  <address>tel:+86"+mobile+"</address>\r\n" + 
+				  		"  <destinationAddress>tel:+86"+mobile+"</destinationAddress>\r\n" + 
+				  		"  <senderAddress>"+chatbotId+"</senderAddress>\r\n" + 
+				  		"<outboundIMMessage>\r\n" + 
+				  		"<conversationID>"+UUID.randomUUID().toString()+"</conversationID>\r\n" + 
+				  		"<contributionID>"+UUID.randomUUID().toString()+"</contributionID>\r\n" + 
+				  		"<contentType>application/vnd.gsma.rcs-ft-http+xml</contentType>\r\n" +  
+				  		"<serviceCapability>\r\n" + 
+				  		"<capabilityId>ChatbotSA</capabilityId>\r\n" + 
+				  		"<version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>\r\n" + 
+				  		"</serviceCapability>\r\n" + 
+				  		"<bodyText><![CDATA[\r\n" + 
+				  		"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+				  		"<file\r\n" + 
+				  		"    xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\"\r\n" + 
+				  		"    xmlns:e=\"urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext\">\r\n" + 
+				  		"    <file-info type=\"thumbnail\">\r\n" + 
+				  		"        <file-size>40045</file-size>\r\n" + 
+				  		"        <content-type>image/png</content-type>\r\n" + 
+				  		"        <data url=\"https://gz01ft.sbc.rcs.chinamobile.com:10001/s/12311415401132320460205002TD\" until=\"2021-01-07T14:15:40Z\"/>\r\n" + 
+				  		"    </file-info>\r\n" + 
+				  		"    <file-info type=\"file\">\r\n" + 
+				  		"        <file-size>52239</file-size>\r\n" + 
+				  		"        <file-name>c1e98f293ddc13f105d537a55da53277.jpg</file-name>\r\n" + 
+				  		"        <content-type>image/jpeg</content-type>\r\n" + 
+				  		"        <data url=\"https://gz01ft.sbc.rcs.chinamobile.com:10001/s/12311415401132320460205002FD.jpg\" until=\"2021-01-07T14:15:40Z\"/>\r\n" + 
+				  		"    </file-info>\r\n" + 
+				  		"</file>\r\n" + 
+				  		"]]></bodyText>\r\n" + 
+				  		"</outboundIMMessage>\r\n" + 
+				  		"        <reportRequest>Delivered</reportRequest>\r\n" + 
+				  		"        <reportRequest>Displayed</reportRequest>\r\n" + 
+				  		"        <reportRequest>Failed</reportRequest>\r\n" + 
+				  		"</msg:outboundMessageRequest>";
   		//音频
 //  		String body = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" + 
 //	  					"<msg:outboundMessageRequest xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">\r\n" + 
@@ -1015,13 +1141,14 @@ public class TestChinaMobileChatbotApi {
 //	  					"        </serviceCapability>\r\n" + 
 //	  					"        <bodyText><![CDATA[\r\n" + 
 //	  					"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
-//	  					"<file  xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">"+
-//	  					"<file-info type=\"file\">\r\n" + 
-//	  					"<file-size>56495</file-size>\r\n" + 
-//	  					"<content-type>audio/mp3</content-type>\r\n" + 
-//	  					"<data \r\n" + 
-//	  					"url=\"https://gz01ft.sbc.rcs.chinamobile.com:10007/s/11182015081132440460878338FD.mp3\" until=\"2020-11-25T20:15:08Z\"/>\r\n" + 
-//	  					"</file-info>\r\n" + 
+//	  					"<file\r\n" + 
+//	  					"    xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">\r\n" + 
+//	  					"    <file-info type=\"file\">\r\n" + 
+//	  					"        <file-size>795094</file-size>\r\n" + 
+//	  					"        <file-name>39b7f7dc8b1138bab5d9757d95393505.wav</file-name>\r\n" + 
+//	  					"        <content-type>audio/x-wav</content-type>\r\n" + 
+//	  					"        <data url=\"https://gz01ft.sbc.rcs.chinamobile.com:10008/s/12311419411132430450705204FD.wav\" until=\"2021-01-07T14:19:41Z\"/>\r\n" + 
+//	  					"    </file-info>\r\n" + 
 //	  					"</file>\r\n" +
 //	  					"]]></bodyText>\r\n" + 
 //	  					"        <reportRequest>Delivered</reportRequest>\r\n" + 
@@ -1031,35 +1158,40 @@ public class TestChinaMobileChatbotApi {
 //	  					"</msg:outboundMessageRequest>";
 		  
 		 //视频
-  		 String body = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" + 
-				"<msg:outboundMessageRequest xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">\r\n" + 
-				"     <address>tel:+86"+mobile+"</address>\r\n" + 
-				"    <destinationAddress>tel:+86"+mobile+"</destinationAddress>\r\n" + 
-				"    <senderAddress>"+chatbotId+"</senderAddress>\r\n" + 
-				"    <outboundIMMessage>\r\n" + 
-				"        <contentType>application/vnd.gsma.rcs-ft-http+xml</contentType>\r\n" + 
-				"        <conversationID>"+UUID.randomUUID().toString()+"</conversationID>\r\n" + 
-				"        <contributionID>"+UUID.randomUUID().toString()+"</contributionID>\r\n" + 
-				"        <serviceCapability>\r\n" + 
-				"            <capabilityId>ChatbotSA</capabilityId>\r\n" + 
-				"            <version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>\r\n" + 
-				"        </serviceCapability>\r\n" + 
-				"        <bodyText><![CDATA[\r\n" + 
-				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
-				"<file  xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">"+
-				"<file-info type=\"file\">\r\n" + 
-				"<file-size>4246316</file-size>\r\n" + 
-				"<content-type>video/mp4</content-type>\r\n" + 
-				"<data \r\n" + 
-				"url=\"https://gz01ft.sbc.rcs.chinamobile.com:10001/s/11181923541132300460183523FD.mp4\" until=\"2020-11-25T19:23:54Z\"/>\r\n" + 
-				"</file-info>\r\n" + 
-				"</file>\r\n" +
-				"]]></bodyText>\r\n" + 
-				"        <reportRequest>Delivered</reportRequest>\r\n" + 
-				"        <reportRequest>Displayed</reportRequest>\r\n" + 
-				"        <reportRequest>Failed</reportRequest>\r\n" + 
-				"    </outboundIMMessage>\r\n" + 
-				"</msg:outboundMessageRequest>";
+//  		 String body = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" + 
+//				"<msg:outboundMessageRequest xmlns:msg=\"urn:oma:xml:rest:netapi:messaging:1\">\r\n" + 
+//				"     <address>tel:+86"+mobile+"</address>\r\n" + 
+//				"    <destinationAddress>tel:+86"+mobile+"</destinationAddress>\r\n" + 
+//				"    <senderAddress>"+chatbotId+"</senderAddress>\r\n" + 
+//				"    <outboundIMMessage>\r\n" + 
+//				"        <contentType>application/vnd.gsma.rcs-ft-http+xml</contentType>\r\n" + 
+//				"        <conversationID>"+UUID.randomUUID().toString()+"</conversationID>\r\n" + 
+//				"        <contributionID>"+UUID.randomUUID().toString()+"</contributionID>\r\n" + 
+//				"        <serviceCapability>\r\n" + 
+//				"            <capabilityId>ChatbotSA</capabilityId>\r\n" + 
+//				"            <version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>\r\n" + 
+//				"        </serviceCapability>\r\n" + 
+//				"        <bodyText><![CDATA[\r\n" + 
+//				"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
+//				"<file xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">\r\n" + 
+//				"	<file-info type=\"thumbnail\">\r\n" + 
+//				"        <file-size>309216</file-size>\r\n" + 
+//				"        <content-type>image/png</content-type>\r\n" + 
+//				"        <data url=\"https://gz01ft.sbc.rcs.chinamobile.com:10010/s/12311418021132280261005432TD\" until=\"2021-01-07T14:18:02Z\"/>\r\n" + 
+//				"    </file-info>" +
+//				"    <file-info type=\"file\">\r\n" + 
+//				"        <file-size>28377216</file-size>\r\n" + 
+//				"        <file-name>7464de07c677d6624fd3fc1153d6e994.mp4</file-name>\r\n" + 
+//				"        <content-type>video/mp4</content-type>\r\n" + 
+//				"        <data url=\"https://gz01ft.sbc.rcs.chinamobile.com:10010/s/12311418021132280261005432FD.mp4\" until=\"2021-01-07T14:18:02Z\"/>\r\n" + 
+//				"    </file-info>\r\n" + 
+//				"</file>\r\n" +
+//				"]]></bodyText>\r\n" + 
+//				"        <reportRequest>Delivered</reportRequest>\r\n" + 
+//				"        <reportRequest>Displayed</reportRequest>\r\n" + 
+//				"        <reportRequest>Failed</reportRequest>\r\n" + 
+//				"    </outboundIMMessage>\r\n" + 
+//				"</msg:outboundMessageRequest>";
   			
 		  HttpEntity<String> request = new HttpEntity<String>(body, headers);
 		  RestTemplate restTemplate = getRestTemplate();
@@ -1070,7 +1202,7 @@ public class TestChinaMobileChatbotApi {
 		  System.out.println(response.getBody());
 		  
 		  JSONObject json = JSONObject.parseObject(response.getBody()); 
-		  return json.getString("code"); 
+		  return json.getString("messageId"); 
 	  }
 	  
 	  /**
@@ -1080,7 +1212,7 @@ public class TestChinaMobileChatbotApi {
 	   * @return 返回操作结果
 	   * @throws Exception
 	   */
-	  public String testSendGroupFileSuggestionsMessage(String token,String mobile) throws Exception {
+	  public String testSendGroupFileSuggestionsMessage(String appId,String token,String mobile) throws Exception {
 		  //http://{serverRoot}/messaging/group/{apiVersion}/outbound/{chatbotURI}/requests
 		  StringBuilder builder = new StringBuilder(); 
 		  builder.append(serverRoot)
@@ -1088,13 +1220,13 @@ public class TestChinaMobileChatbotApi {
 		  .append("/").append("group")
 		  .append("/").append(apiVersion) 
 		  .append("/").append("outbound")
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("requests");
 		  String url = builder.toString();
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
-		  String authorization = getAuthentication(token,date);
+		  String authorization = getAuthentication(appId,token,date);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.setContentType(MediaType.APPLICATION_XML);
@@ -1122,7 +1254,7 @@ public class TestChinaMobileChatbotApi {
 				  		"<file-info type=\"thumbnail\">\r\n" + 
 				  		"		<file-size>1834</file-size>\r\n" + 
 				  		"		<content-type>image/jpeg</content-type>\r\n" + 
-				  		"		<data url=\"https://gz01ft.sbc.rcs.chinamobile.com:10011/s/12161804181132510291100688TD\" until=\"2020-12-23T18:04:18Z\"/>\r\n" + 
+				  		"		<data url=\"https://vd3.bdstatic.com/mda-ikkky2pmut5s21ee/sc/mda-ikkky2pmut5s21ee.mp4?v_from_s=hba_haokanvideoui_5488&auth_key=1609382364-0-0-a68b53e974d49eb7b1df2665709d5b98&bcevod_channel=searchbox_feed&pd=1&pt=3&abtest=8012_1\" until=\"2020-12-23T18:04:18Z\"/>\r\n" + 
 				  		"	</file-info>\r\n" + 
 				  		"	<file-info type=\"file\">\r\n" + 
 				  		"		<file-size>2035</file-size>\r\n" + 
@@ -1351,7 +1483,7 @@ public class TestChinaMobileChatbotApi {
 	   * @return 返回操作结果
 	   * @throws Exception
 	   */
-	  public String testSendGroupSingleCardMessage(String token,String mobile) throws Exception {
+	  public String testSendGroupSingleCardMessage(String appId,String token,String mobile) throws Exception {
 		  //http://{serverRoot}/messaging/group/{apiVersion}/outbound/{chatbotURI}/requests
 		  StringBuilder builder = new StringBuilder(); 
 		  builder.append(serverRoot)
@@ -1359,13 +1491,13 @@ public class TestChinaMobileChatbotApi {
 		  .append("/").append("group")
 		  .append("/").append(apiVersion) 
 		  .append("/").append("outbound")
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("requests");
 		  String url = builder.toString();
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
-		  String authorization = getAuthentication(token,date);
+		  String authorization = getAuthentication(appId,token,date);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.setContentType(MediaType.APPLICATION_XML);
@@ -1556,10 +1688,10 @@ public class TestChinaMobileChatbotApi {
 		  		"            },\r\n" + 
 		  		"            \"content\": {\r\n" + 
 		  		"                \"media\": {\r\n" + 
-		  		"                    \"mediaUrl\": \"https://gz01ft.sbc.rcs.chinamobile.com:10001/s/11181923541132300460183523FD.mp4\",\r\n" + 
+		  		"                    \"mediaUrl\": \"https://vd3.bdstatic.com/mda-ikkky2pmut5s21ee/sc/mda-ikkky2pmut5s21ee.mp4?v_from_s=hba_haokanvideoui_5488&auth_key=1609382364-0-0-a68b53e974d49eb7b1df2665709d5b98&bcevod_channel=searchbox_feed&pd=1&pt=3&abtest=8012_1\",\r\n" + 
 		  		"                    \"mediaContentType\": \"video/mp4\",\r\n" + 
 		  		"                    \"mediaFileSize\": 4246316,\r\n" + 
-		  		"                    \"thumbnailUrl\": \"https://gz01ft.sbc.rcs.chinamobile.com:10001/s/11181923541132300460183523TD\",\r\n" + 
+		  		"                    \"thumbnailUrl\": \"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=415133877,1320852350&fm=26&gp=0.jpg\",\r\n" + 
 		  		"                    \"thumbnailContentType\": \"image/jpeg\",\r\n" + 
 		  		"                    \"thumbnailFileSize\": 4067,\r\n" + 
 		  		"                    \"height\": \"MEDIUM_HEIGHT\"\r\n" + 
@@ -1633,7 +1765,7 @@ public class TestChinaMobileChatbotApi {
 	   * @return 返回操作结果
 	   * @throws Exception
 	   */
-	  public String testSendGroupSingleCardSuggestionsMessage(String token,String mobile) throws Exception {
+	  public String testSendGroupSingleCardSuggestionsMessage(String appId,String token,String mobile) throws Exception {
 		  //http://{serverRoot}/messaging/group/{apiVersion}/outbound/{chatbotURI}/requests
 		  StringBuilder builder = new StringBuilder(); 
 		  builder.append(serverRoot)
@@ -1641,13 +1773,13 @@ public class TestChinaMobileChatbotApi {
 		  .append("/").append("group")
 		  .append("/").append(apiVersion) 
 		  .append("/").append("outbound")
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("requests");
 		  String url = builder.toString();
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
-		  String authorization = getAuthentication(token,date);
+		  String authorization = getAuthentication(appId,token,date);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.setContentType(MediaType.APPLICATION_XML);
@@ -2049,7 +2181,7 @@ public class TestChinaMobileChatbotApi {
 	   * @return 返回操作结果
 	   * @throws Exception
 	   */
-	  public String testSendGroupMultipleCardMessage(String token,String mobile) throws Exception {
+	  public String testSendGroupMultipleCardMessage(String appId,String token,String mobile) throws Exception {
 		  //http://{serverRoot}/messaging/group/{apiVersion}/outbound/{chatbotURI}/requests
 		  StringBuilder builder = new StringBuilder(); 
 		  builder.append(serverRoot)
@@ -2057,13 +2189,13 @@ public class TestChinaMobileChatbotApi {
 		  .append("/").append("group")
 		  .append("/").append(apiVersion) 
 		  .append("/").append("outbound")
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("requests");
 		  String url = builder.toString();
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
-		  String authorization = getAuthentication(token,date);
+		  String authorization = getAuthentication(appId,token,date);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.setContentType(MediaType.APPLICATION_XML);
@@ -2267,7 +2399,7 @@ public class TestChinaMobileChatbotApi {
 	   * @return 返回操作结果
 	   * @throws Exception
 	   */
-	  public String testSendGroupMultipleCardSuggestionsMessage(String token,String mobile) throws Exception {
+	  public String testSendGroupMultipleCardSuggestionsMessage(String appId,String token,String mobile) throws Exception {
 		  //http://{serverRoot}/messaging/group/{apiVersion}/outbound/{chatbotURI}/requests
 		  StringBuilder builder = new StringBuilder(); 
 		  builder.append(serverRoot)
@@ -2275,13 +2407,13 @@ public class TestChinaMobileChatbotApi {
 		  .append("/").append("group")
 		  .append("/").append(apiVersion) 
 		  .append("/").append("outbound")
-		  .append("/").append(chatbotId)
+		  .append("/").append(getChatBotUri(appId))
 		  .append("/").append("requests");
 		  String url = builder.toString();
 		  long time = System.currentTimeMillis();
 		  String date = long2gmt(time);
 		  System.out.println(date);
-		  String authorization = getAuthentication(token,date);
+		  String authorization = getAuthentication(appId,token,date);
 		  HttpHeaders headers = new HttpHeaders();
 		  headers.add("Authorization", "Basic "+authorization);
 		  headers.setContentType(MediaType.APPLICATION_XML);

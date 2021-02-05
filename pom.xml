@@ -47,5 +47,6 @@
 		<module>test-mybatis</module>
 		<module>test-my-httpclient</module>
 		<module>baiwu</module>
+		<module>test-http-request</module>
 	</modules>
 </project>

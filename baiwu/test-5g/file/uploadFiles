@@ -1,0 +1,134 @@
+2021-01-20 14:02:54 : tid : 0a32b5d9-8ba6-498e-8a8a-1e77f5dee158
+<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns="urn:gsma:params:xml:ns:rcs:rcs:fthttp"
+xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
+<file-info type="file">
+<file-size>5830</file-size>
+<file-name>c9448c06-7dde-4bf2-9766-d1d9fd53e187.amr</file-name>
+<content-type>audio/amr</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01201403251101410070100008FD.amr" until="2021-01-23T14:03:25Z"/>
+<file-exist>1</file-exist>
+<e:branded-url>https://1/s/W4eTDZAABDf.amr</e:branded-url>
+</file-info>
+</file>
+2021-01-26 10:46:46 : 
+tid : a77bb0f5-4b43-4b1f-8ce7-92b23bbc3830
+<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns="urn:gsma:params:xml:ns:rcs:rcs:fthttp"
+xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
+<file-info type="file">
+<file-size>5830</file-size>
+<file-name>c9448c06-7dde-4bf2-9766-d1d9fd53e187.amr</file-name>
+<content-type>audio/amr</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01261047191101410080100011FD.amr" until="2021-01-29T10:47:19Z"/>
+<file-exist>1</file-exist>
+<e:branded-url>https://1/s/W4eZvTAACLU.amr</e:branded-url>
+</file-info>
+</file>
+2021-01-26 10:47:56 : 
+tid : e143c368-068e-4f8d-94f4-9a5203a4feac
+<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns="urn:gsma:params:xml:ns:rcs:rcs:fthttp"
+xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
+<file-info type="file">
+<file-size>5830</file-size>
+<file-name>c9448c06-7dde-4bf2-9766-d1d9fd53e187.amr</file-name>
+<content-type>audio/amr</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01261048281101410130100022FD.amr" until="2021-01-29T10:48:28Z"/>
+<file-exist>1</file-exist>
+<e:branded-url>https://1/s/W4eZwcAACMf.amr</e:branded-url>
+</file-info>
+</file>
+2021-01-26 10:53:16 : 
+tid : 323d3e8f-8c35-4e6a-a366-217c5ed5f4b0
+<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns="urn:gsma:params:xml:ns:rcs:rcs:fthttp"
+xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
+<file-info type="file">
+<file-size>5830</file-size>
+<file-name>c9448c06-7dde-4bf2-9766-d1d9fd53e187.amr</file-name>
+<content-type>audio/amr</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01261053481101410090100020FD.amr" until="2021-01-29T10:53:48Z"/>
+<file-exist>1</file-exist>
+<e:branded-url>https://1/s/W4eZ1wAACO6.amr</e:branded-url>
+</file-info>
+</file>
+2021-01-26 11:24:49 : 
+tid : dd6b983c-f35c-44a6-ac59-b8d28466aba9
+<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns="urn:gsma:params:xml:ns:rcs:rcs:fthttp"
+xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
+<file-info type="thumbnail">
+<file-size>2619</file-size>
+<content-type>image/PNG</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01261125211101410040100004TD" until="2021-01-29T11:25:21Z"/>
+</file-info>
+<file-info type="file">
+<file-size>102400</file-size>
+<file-name>a6131d73887c5fa669bb4518dac83173.JPG</file-name>
+<content-type>image/JPG</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01261125211101410040100004FD.JPG" until="2021-01-29T11:25:21Z"/>
+<file-exist>1</file-exist>
+<e:branded-url>https://1/s/W4eZZWAACRH.JPG</e:branded-url>
+</file-info>
+</file>
+2021-01-27 16:12:42 : 
+tid : f9223be6-72b6-4ce9-a139-8ecb233362bf
+<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns="urn:gsma:params:xml:ns:rcs:rcs:fthttp"
+xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
+<file-info type="thumbnail">
+<file-size>2619</file-size>
+<content-type>image/PNG</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01271613141101410110100007TD" until="2021-01-30T16:13:14Z"/>
+</file-info>
+<file-info type="file">
+<file-size>102400</file-size>
+<file-name>a6131d73887c5fa669bb4518dac83173.JPG</file-name>
+<content-type>image/JPG</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01271613141101410110100007FD.JPG" until="2021-01-30T16:13:14Z"/>
+<file-exist>1</file-exist>
+<e:branded-url>https://1/s/W4eaNPAAAkG.JPG</e:branded-url>
+</file-info>
+</file>
+2021-01-27 16:18:14 : 
+tid : aabc2803-e3d2-44ec-925b-86098e5e3ef2
+null
+2021-01-27 16:21:22 : 
+tid : ef4963d2-67c8-4784-bfa2-c98d5b80ceea
+<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns="urn:gsma:params:xml:ns:rcs:rcs:fthttp"
+xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
+<file-info type="thumbnail">
+<file-size>2619</file-size>
+<content-type>image/PNG</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01271621551101410060100003TD" until="2021-01-30T16:21:55Z"/>
+</file-info>
+<file-info type="file">
+<file-size>102400</file-size>
+<file-name>a6131d73887c5fa669bb4518dac83173.JPG</file-name>
+<content-type>image/JPG</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01271621551101410060100003FD.JPG" until="2021-01-30T16:21:55Z"/>
+<file-exist>1</file-exist>
+<e:branded-url>https://1/s/W4eaV3AAAl3.JPG</e:branded-url>
+</file-info>
+</file>
+2021-01-27 16:37:05 : 
+tid : fb17bcc6-34f4-48a8-8333-48e317ff22c1
+<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns="urn:gsma:params:xml:ns:rcs:rcs:fthttp"
+xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
+<file-info type="thumbnail">
+<file-size>2619</file-size>
+<content-type>*/*</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01271637381101410060100004TD" until="2021-01-30T16:37:38Z"/>
+</file-info>
+<file-info type="file">
+<file-size>102400</file-size>
+<file-name>a6131d73887c5fa669bb4518dac83173.JPG</file-name>
+<content-type>*/*</content-type>
+<data url="https://ft101.sh.5gm.wo.cn:10099/s/01271637381101410060100004FD.JPG" until="2021-01-30T16:37:38Z"/>
+<file-exist>1</file-exist>
+<e:branded-url>https://1/s/W4ealmAAAvA.JPG</e:branded-url>
+</file-info>
+</file>

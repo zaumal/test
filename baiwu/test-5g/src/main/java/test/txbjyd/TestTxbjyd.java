@@ -13,7 +13,7 @@ public class TestTxbjyd extends TestFjydtH5{
 	String serverRoot = "http://112.35.162.232:8078/mbmp/developer/accesslayer";
 	String apiVersion = "v1"; 
 	public TestTxbjyd(String appid, String password) {
-		super(appid, password);
+		super(appid,appid, password);
 		this.client = new OkHttpClient().newBuilder().build();
 	}
 
@@ -37,7 +37,7 @@ public class TestTxbjyd extends TestFjydtH5{
 	
 	protected void request(String data) {
 		System.out.println("request ---------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ");
-		String url = serverRoot + "/messaging/group/" + apiVersion + "/outbound/" + getchatbotUri(appId) + "/requests";
+		String url = serverRoot + "/messaging/group/" + apiVersion + "/outbound/" + getchatbotSip() + "/requests";
 		System.out.println(url);
 		System.out.println("xml : ");
 		System.out.println(data);
@@ -63,7 +63,7 @@ public class TestTxbjyd extends TestFjydtH5{
 	
 	public void requestGroupMsg() {
 		System.out.println("request ---------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ");
-		String url = serverRoot + "/messaging/group/" + apiVersion + "/outbound/" + getchatbotUri(appId) + "/requests";
+		String url = serverRoot + "/messaging/group/" + apiVersion + "/outbound/" + getchatbotSip() + "/requests";
 		System.out.println(url);
 		System.out.println("群发：" + "");
 		System.out.println();
@@ -76,7 +76,7 @@ public class TestTxbjyd extends TestFjydtH5{
 	
 	public void requestRevokeMsg(String messageId) {
 		System.out.println("request ---------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ");
-		String url = serverRoot + "/messaging/" + apiVersion + "/outbound/" + getchatbotUri(appId) + "/requests/" + messageId + "/status";
+		String url = serverRoot + "/messaging/" + apiVersion + "/outbound/" + getchatbotSip() + "/requests/" + messageId + "/status";
 		System.out.println(url);
 		System.out.println("撤回：" + messageId);
 		System.out.println();
@@ -112,7 +112,7 @@ public class TestTxbjyd extends TestFjydtH5{
 					.url(url)
 					.addHeader("Authorization", authorization)
 					.addHeader("Date", headerDate)
-					.addHeader("User-Agent", "SP/"+getchatbotUri(appId))
+					.addHeader("User-Agent", "SP/"+getchatbotSip())
 					.addHeader("Terminal-type", "Chatbot")
 					.addHeader("tid", x)
 					.delete()
