@@ -9,8 +9,10 @@ import java.io.OutputStreamWriter;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -96,13 +98,112 @@ public class TestBjdx{
 //		t.accessToken = "a7d256eab9cf45a8be92972f6d78cf96";
         t.getAccessToken();
         //上传文件
-        t.uploadFile("file/image2.png");
+//        t.uploadFile("file/image2.png");
+        //缩略图
+//        t.uploadFile("file/thumbnail2.jpg");
         //下载文件
 //        t.downloadFile("http://124.126.120.102/temp/src/2021012515/29c00/view/36,3c3504f9382c90824e05.png");
         //删除文件
 //        t.deleteFile("http://124.126.120.102/temp/src/2021012515/29c00/view/36,3c3504f9382c90824e05.png");
         //下发文本消息
 //        t.requestText();
+        
+        //3、文件消息 
+//		t.sendFile();
+        //5、富媒体单卡片消息(带 CSS 样式) + Suggestions 
+//        t.sendSigleCard();
+        //6、富媒体多卡片消息(带 CSS 样式) + Suggestions 
+		t.sendMultCard();
+	}
+	
+	String getDuokp() {
+		String s = "{\r\n" + 
+				"  \"contributionId\": \"134dbb7a-32c7-4813-80a3-b9597e3f9a27\",\r\n" + 
+				"  \"conversationId\": \"7c000ce6-4206-4111-b186-7c0756fb80c9\",\r\n" + 
+				"  \"destinationAddress\": [\r\n" + 
+				"    \"tel:+8615330759941\"\r\n" + 
+				"  ],\r\n" + 
+				"  \"messageId\": \"426123a32-6391-4395-a5ef-d325506155ed\",\r\n" + 
+				"  \"messageList\": [\r\n" + 
+				"    {\r\n" + 
+				"      \"contentText\": {\r\n" + 
+				"        \"message\": {\r\n" + 
+				"          \"generalPurposeCardCarousel\": {\r\n" + 
+				"            \"content\": [\r\n" + 
+				"              {\r\n" + 
+				"                \"description\": \"电信5G多卡片消息!\",\r\n" + 
+				"                \"media\": {\r\n" + 
+				"                  \"height\": \"SHORT_HEIGHT\",\r\n" + 
+				"                  \"mediaContentType\": \"image/png\",\r\n" + 
+				"                  \"mediaFileSize\": 178887,\r\n" + 
+				"                  \"mediaUrl\": \"https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg\",\r\n" + 
+				"                  \"thumbnailContentType\": \"image/png\",\r\n" + 
+				"                  \"thumbnailFileSize\": 178887,\r\n" + 
+				"                  \"thumbnailUrl\": \"https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg\"\r\n" + 
+				"                },\r\n" + 
+				"                \"suggestions\": [\r\n" + 
+				"                  {\r\n" + 
+				"                    \"reply\": {\r\n" + 
+				"                      \"displayText\": \"建议回复\",\r\n" + 
+				"                      \"postback\": {\r\n" + 
+				"                        \"data\": \"建议回复\"\r\n" + 
+				"                      }\r\n" + 
+				"                    }\r\n" + 
+				"                  }\r\n" + 
+				"                ],\r\n" + 
+				"                \"title\": \"5G视频彩铃 \"\r\n" + 
+				"              },\r\n" + 
+				"              {\r\n" + 
+				"                \"description\": \"电信5G多卡片消息！\",\r\n" + 
+				"                \"media\": {\r\n" + 
+				"                  \"height\": \"SHORT_HEIGHT\",\r\n" + 
+				"                  \"mediaContentType\": \"image/png\",\r\n" + 
+				"                  \"mediaFileSize\": 178887,\r\n" + 
+				"                  \"mediaUrl\": \"https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg\",\r\n" + 
+				"                  \"thumbnailContentType\": \"image/png\",\r\n" + 
+				"                  \"thumbnailFileSize\": 178887,\r\n" + 
+				"                  \"thumbnailUrl\": \"https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg\"\r\n" + 
+				"                },\r\n" + 
+				"                \"suggestions\": [\r\n" + 
+				"                  {\r\n" + 
+				"                    \"reply\": {\r\n" + 
+				"                      \"displayText\": \"建议回复\",\r\n" + 
+				"                      \"postback\": {\r\n" + 
+				"                        \"data\": \"建议回复\"\r\n" + 
+				"                      }\r\n" + 
+				"                    }\r\n" + 
+				"                  }\r\n" + 
+				"                ],\r\n" + 
+				"                \"title\": \"电信5G多卡片消息!\"\r\n" + 
+				"              }\r\n" + 
+				"            ],\r\n" + 
+				"            \"layout\": {\r\n" + 
+				"              \"cardWidth\": \"MEDIUM_WIDTH\"\r\n" + 
+				"            }\r\n" + 
+				"          }\r\n" + 
+				"        }\r\n" + 
+				"      },\r\n" + 
+				"      \"contentType\": \"application/vnd.gsma.botmessage.v1.0+json\"\r\n" + 
+				"    }\r\n" + 
+				"  ],\r\n" + 
+				"  \"reportRequest\": [\r\n" + 
+				"    \"sent\",\r\n" + 
+				"    \"failed\",\r\n" + 
+				"    \"delivered\",\r\n" + 
+				"    \"displayed\",\r\n" + 
+				"    \"deliveredToNetwork\"\r\n" + 
+				"  ],\r\n" + 
+				"  \"senderAddress\": \"sip:106598858810000006@botplatform.rcs.vnet.cn\",\r\n" + 
+				"  \"serviceCapability\": [\r\n" + 
+				"    {\r\n" + 
+				"      \"capabilityId\": \"ChatbotSA\",\r\n" + 
+				"      \"version\": \"+g.gsma.rcs.botversion=\\\"#=1\\\"\"\r\n" + 
+				"    }\r\n" + 
+				"  ],\r\n" + 
+				"  \"smsSupported\": false,\r\n" + 
+				"  \"storeSupported\": false\r\n" + 
+				"}";
+		return s;
 	}
 	
 	String uploadFile(String filePath) {
@@ -114,10 +215,10 @@ public class TestBjdx{
         builder.addFormDataPart("file", file.getName(), RequestBody.create(file,MediaType.parse("*/*")));
         
 		return request(new Request.Builder()
-				.addHeader("Authorization", "accessToken " + this.accessToken)
+				.addHeader("Authorization", this.accessToken)
 				.addHeader("accessToken", this.accessToken)
 				.addHeader("accessToken", "accessToken " +this.accessToken)
-				.addHeader("uploadMode", "temp") //perm:永久文件 temp:临时文件
+				.addHeader("uploadMode", "perm") //perm:永久文件 temp:临时文件
 				.addHeader("content-type", "multipart/form-data")
 				.url(url)
 				.post(builder.build())
@@ -145,7 +246,7 @@ public class TestBjdx{
 						.addHeader("host", "maaptest.189.cn")
 						.addHeader("content-length", bodyStr.getBytes().length + "")
 						.url(url)
-						.post(RequestBody.create(bodyStr,MediaType.parse("application/json")))
+						.post(RequestBody.create(bodyStr.getBytes(),MediaType.parse("application/json")))
 						.build(),"beijingDxChatbot-getAccessToken");
 				JSONObject jo = JSON.parseObject(response);
 				accessToken = jo.getString("accessToken");
@@ -318,13 +419,17 @@ public class TestBjdx{
 		Map<String,Object> card2 = getSignleCard();
 		
 		Map map = getJSON(card1,card2);
+//        Strig body = JSON.toJSONString(map);
         
+		String body = getDuokp();
+		System.out.println("消息体：" + body);
+		
 		return request(new Request.Builder()
 				.addHeader("Authorization", this.accessToken)
 				.addHeader("Content-Type", "application/json")
 				.addHeader("Date", this.headerDate)
 				.url(url)
-				.post(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.post(RequestBody.create(body,MediaType.parse("application/json")))
 				.build(),"sendText");
 	}
 	
@@ -335,10 +440,11 @@ public class TestBjdx{
 		Map<String,Object> card = getSignleCard();
 		
 		Map map = getJSON(card);
-        String body = JSON.toJSONString(map);
+//        String body = JSON.toJSONString(map);
+		String body = getDkp();
         System.out.println(body);
 		return request(new Request.Builder()
-				.addHeader("Authorization", "accessToken " + this.accessToken)
+				.addHeader("Authorization", this.accessToken)
 				.addHeader("accessToken", this.accessToken)
 				.addHeader("accessToken", "accessToken " +this.accessToken)
 				.addHeader("Content-Type", "application/json")
@@ -347,6 +453,103 @@ public class TestBjdx{
 				.post(RequestBody.create(body,MediaType.parse("application/json")))
 				.build(),"sendText");
 	} 
+	
+	
+	String getDkp() {
+		String s = "{\r\n" + 
+				"  \"messageId\": \"cb1188a3-37ec-1037-9254-2ec66e44305b2\",\r\n" + 
+				"  \"messageList\": [\r\n" + 
+				"    {\r\n" + 
+				"      \"contentType\": \"application/vnd.gsma.botmessage.v1.0+json\",\r\n" + 
+				"      \"contentText\": {\r\n" + 
+				"        \"message\": {\r\n" + 
+				"          \"generalPurposeCard\": {\r\n" + 
+				"            \"layout\": {\r\n" + 
+				"              \"cardOrientation\": \"VERTICAL\",\r\n" + 
+				"              \"titleFontStyle\": [\r\n" + 
+				"                \"underline\",\r\n" + 
+				"                \"bold\"\r\n" + 
+				"              ],\r\n" + 
+				"              \"descriptionFontStyle\": [\r\n" + 
+				"                \"bold\"\r\n" + 
+				"              ],\r\n" + 
+				"              \"style\": \"http://example.com/default.css\"\r\n" + 
+				"            },\r\n" + 
+				"            \"content\": {\r\n" + 
+				"              \"media\": {\r\n" + 
+				"                \"mediaUrl\": \"https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg\",\r\n" + 
+				"                \"mediaContentType\": \"image/jpg\",\r\n" + 
+				"                \"mediaFileSize\": 178887,\r\n" + 
+				"                \"thumbnailUrl\": \"https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg\",\r\n" + 
+				"                \"thumbnailContentType\": \"image/png\",\r\n" + 
+				"                \"thumbnailFileSize\": 178887,\r\n" + 
+				"                \"height\": \"MEDIUM_HEIGHT\",\r\n" + 
+				"                \"contentDescription\": \"Textual description of media content,  e.g. for use with screen readers.\"\r\n" + 
+				"              },\r\n" + 
+				"              \"title\": \"This is a single rich card.\",\r\n" + 
+				"              \"description\": \"This is the description of the rich card. It's the first field that will be truncated if it exceeds the maximum width or height of a card.\",\r\n" + 
+				"              \"suggestions\": [\r\n" + 
+				"                {\r\n" + 
+				"                  \"reply\": {\r\n" + 
+				"                    \"displayText\": \"点击回复\",\r\n" + 
+				"                    \"postback\": {\r\n" + 
+				"                      \"data\": \"set_by_chatbot_reply_no\"\r\n" + 
+				"                    }\r\n" + 
+				"                  }\r\n" + 
+				"                },\r\n" + 
+				"                {\r\n" + 
+				"                  \"action\": {\r\n" + 
+				"                    \"urlAction\": {\r\n" + 
+				"                      \"openUrl\": {\r\n" + 
+				"                        \"url\": \"www.baidu.com\",\r\n" + 
+				"                        \"application\": \"webview\",\r\n" + 
+				"                        \"viewMode\": \"half\"\r\n" + 
+				"                      }\r\n" + 
+				"                    },\r\n" + 
+				"                    \"displayText\": \"百度一下\",\r\n" + 
+				"                    \"postback\": {\r\n" + 
+				"                      \"data\": \"set_by_chatbot_open_url\"\r\n" + 
+				"                    }\r\n" + 
+				"                  }\r\n" + 
+				"                },\r\n" + 
+				"                {\r\n" + 
+				"                  \"action\": {\r\n" + 
+				"                    \"dialerAction\": {\r\n" + 
+				"                      \"dialPhoneNumber\": {\r\n" + 
+				"                        \"phoneNumber\": \"+8615330759941\"\r\n" + 
+				"                      }\r\n" + 
+				"                    },\r\n" + 
+				"                    \"displayText\": \"拨打号码\",\r\n" + 
+				"                    \"postback\": {\r\n" + 
+				"                      \"data\": \"set_by_chatbot_open_dialer\"\r\n" + 
+				"                    }\r\n" + 
+				"                  }\r\n" + 
+				"                }\r\n" + 
+				"              ]\r\n" + 
+				"            }\r\n" + 
+				"          }\r\n" + 
+				"        }\r\n" + 
+				"      }\r\n" + 
+				"    }\r\n" + 
+				"  ],\r\n" + 
+				"  \"trafficType\": \"advertisement\",\r\n" + 
+				"  \"destinationAddress\": [\r\n" + 
+				"    \"tel:+8615330759941\"\r\n" + 
+				"  ],\r\n" + 
+				"  \"senderAddress\": \"sip:106598858810000006@botplatform.rcs.vnet.cn\",\r\n" + 
+				"  \"smsSupported\": false,\r\n" + 
+				"  \"storeSupported\": false,\r\n" + 
+				"  \"serviceCapability\": [\r\n" + 
+				"    {\r\n" + 
+				"      \"capabilityId\": \"ChatbotSA\",\r\n" + 
+				"      \"version\": \"+g.gsma.rcs.botversion=\\\"#=1\\\"\"\r\n" + 
+				"    }\r\n" + 
+				"  ],\r\n" + 
+				"  \"conversationId\": \"XSFDSFDFSAFDSAS^%\",\r\n" + 
+				"  \"contributionId\": \"SFF$#REGFY7&^%THT\"\r\n" + 
+				"}";
+		return s;
+	}
 	
 	String sendGeo() {
 		System.out.println("下发回落地理位置 ：");
@@ -372,13 +575,14 @@ public class TestBjdx{
 		Map<String,Object> file = getFile();
 		
 		Map map = getJSON(file);
-        
+		String body = JSON.toJSONString(map);
+        System.out.println("消息体：" + body);
 		return request(new Request.Builder()
 				.addHeader("Authorization", this.accessToken)
 				.addHeader("Content-Type", "application/json")
 				.addHeader("Date", this.headerDate)
 				.url(url)
-				.post(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.post(RequestBody.create(body,MediaType.parse("application/json")))
 				.build(),"sendText");
 	}
 	
@@ -431,19 +635,27 @@ public class TestBjdx{
 		Map<String,Object> layout = new HashMap<String,Object>();
 		layout.put("cardOrientation", "HORIZONTAL");
 		layout.put("imageAlignment", "LEFT");
-//		layout.put("titleFontStyle", Arrays.asList("underline","bold"));
-//		layout.put("descriptionFontStyle", Arrays.asList("calibri"));
+		layout.put("titleFontStyle", Arrays.asList("underline","bold"));
+		layout.put("descriptionFontStyle", Arrays.asList("calibri"));
 //		layout.put("style", "http://example.com/default.css");
 		generalPurposeCard.put("layout", layout);
 		Map<String,Object> content = new HashMap<String,Object>();
 		Map<String,Object> media = new HashMap<String,Object>();
-		media.put("mediaUrl", "http://47.103.149.126:8001/bot/v1/medias/fid/517515804948275200");
-		media.put("mediaContentType", "video/mp4");
-		media.put("mediaFileSize", "660976");
-		media.put("thumbnailUrl", "http://47.103.149.126:8001/bot/v1/medias/fid/517515699704799232");
+//		media.put("mediaUrl", "https://maaptest.189.cn/maap_message/bot/chanageUrl/temp/20210212111037/171008/12,489e21a8151d.png");
+//		media.put("mediaContentType", "image/png");
+//		media.put("mediaFileSize", "171008");
+//		media.put("thumbnailUrl", "https://maaptest.189.cn/maap_message/bot/chanageUrl/temp/20210212111228/9216/12,489f69eede8a.jpg");
+//		media.put("thumbnailContentType", "image/jpg");
+//		media.put("thumbnailFileSize", "9216");
+		
+		media.put("mediaUrl", "https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg");
+		media.put("mediaContentType", "image/jpg");
+		media.put("mediaFileSize", "178887");
+		media.put("thumbnailUrl", "https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg");
 		media.put("thumbnailContentType", "image/png");
-		media.put("thumbnailFileSize", "171008");
-//		media.put("height", "");
+		media.put("thumbnailFileSize", "178887");
+		
+		media.put("height", "MEDIUM_HEIGHT");
 		media.put("contentDescription", "媒体文件的描述信息");
 		content.put("media", media);
 		content.put("title", "这是一个但卡片消息");
@@ -461,27 +673,26 @@ public class TestBjdx{
 		Map<String,Object> result = new HashMap<>();
 		result.put("contentType","application/vnd.gsma.rcs-ft-http");
 		result.put("contentEncoding","utf8");
-		Map<String,Object> contentText = new HashMap<>();
+		List<Map<String,Object>> contentText = new ArrayList<>();
 		
 		Map<String,Object> file = new HashMap<>();
 		file.put("type","file");
-		file.put("fileSize","file");
-		file.put("fileName","file");
-		file.put("contentType","file");
-		file.put("url","file");
-		file.put("until","file");
-		file.put("contentType","file");
+		file.put("fileSize","178887");
+		file.put("fileName","image2.jpg");
+		file.put("contentType","image/jpg");
+		file.put("url","https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg");
+//		file.put("until","2021-02-12T11:10:37Z");
+		contentText.add(file);
 		
 		Map<String,Object> thumbnail = new HashMap<>();
 		thumbnail.put("type","thumbnail");
-		thumbnail.put("fileSize","file");
-		thumbnail.put("fileName","file");
-		thumbnail.put("contentType","file");
-		thumbnail.put("url","file");
-		thumbnail.put("until","file");
-		thumbnail.put("contentType","file");
-		
-		contentText.put("contentText", Arrays.asList(file,thumbnail));
+		thumbnail.put("fileSize","178887");
+		thumbnail.put("fileName","imaget2.png");
+		thumbnail.put("contentType","image/png");
+		thumbnail.put("url","https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg");
+//		thumbnail.put("until","2021-02-12T11:12:28Z");
+		contentText.add(thumbnail);
+		result.put("contentText", contentText);
 		
 		return result;
 	}

@@ -75,7 +75,7 @@ public class TestBjdxMannager {
 		String cspToken = "-gGM#-UG?YJutkB04ZO8";
 		
 		TestBjdxMannager t = new TestBjdxMannager(scpId,cspSecret);
-//		t.accessToken = t.getAccessToken();
+		t.accessToken = t.getAccessToken();
 		//上传客户图片
 //		t.uploadFile("0","D:\\zal\\bw\\5G消息\\北京电信\\北京电信5G消息CSP资料\\logo.png");
 		//上传省份证正反面
@@ -96,7 +96,7 @@ public class TestBjdxMannager {
 //		t.uploadChatbotFile("1", "D:\\zal\\bw\\5G消息\\北京电信\\北京电信5G消息CSP资料\\背景.png");
 		
 		//新增chatbot
-		t.addChatbot();
+//		t.addChatbot();
 		
 		//上线chatbot
 //		t.updateOnline();
@@ -134,7 +134,7 @@ public class TestBjdxMannager {
 		Map<String,String> map = new HashMap<>();
 		map.put("agreement", "2");//协议 1:http，2:https
 		map.put("token", "8mZQD4inG98YW5");//开发者 token，最大 16 位
-		map.put("url", "http://124.239.146.131:9090/rcs/api/callback");//回调 URL 地址根目录 以 http://开头，IP+端口的形式，用来接收下行消息状态报告以及消息通知
+		map.put("url", "http://124.239.146.131:9090/rcs/api/dx/bjdx/callback");//回调 URL 地址根目录 以 http://开头，IP+端口的形式，用来接收下行消息状态报告以及消息通知
 		map.put("accessTagNo", "a7d256eab9cf45a8be92972f6d78cf96");//新增 Chatbot 时,返回的 Chatbot 的唯一识别标识
 		map.put("enable", "1");//Chatbot 接口是否启用，1:启用，0:不启用
 		

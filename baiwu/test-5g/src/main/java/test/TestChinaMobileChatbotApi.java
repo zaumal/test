@@ -408,7 +408,8 @@ public class TestChinaMobileChatbotApi {
 		
 //		manager.deleteFile(appId, token, "5c2bb25af4df44a34a9843df88e7b731d");
 		
-		String mobile = "15811491455";
+//		String mobile = "15811491455";
+		String mobile = "18810767899";
 //		String mobile = "15132291613";
 		//群发文本消息
 		manager.testSendGroupTextMessage(appId,token,mobile);

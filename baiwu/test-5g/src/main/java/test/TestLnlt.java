@@ -43,11 +43,12 @@ public class TestLnlt extends TestBjdx{
 
 		
 //		t.uploadFile("file/image2.png");
+//		t.uploadFile("file/thumbnail2.jpg");
 		
 //		t.uploadFile("file/video1.mp4");
 		
 		//1、下行文本消息 
-//		t.sendText()
+//		t.sendText();
 		//2、下行文本消息+ 悬浮菜单 
 //		t.sendSugText();
 		//3、文件消息 
@@ -63,7 +64,7 @@ public class TestLnlt extends TestBjdx{
 //		t.sendRevoke("");
 		
 		//上传素材
-//		t.uploadFile("");
+		t.uploadFile("");
 	}
 }
 

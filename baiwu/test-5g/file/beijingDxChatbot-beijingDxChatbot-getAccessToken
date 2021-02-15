@@ -23,3 +23,5 @@
 2021-01-29 11:33:35 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
 2021-01-29 11:39:28 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
 2021-01-29 11:43:42 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-02-09 11:08:38 : {"errorCode":20002,"errorMessage":"参数异常(Http头域字段Content-Type  Null或缺失或不合法)"}
+2021-02-09 11:09:18 : {"accessToken":"accessToken eFNudUgxMk06Njc0MDE3YTliY2FmOWNjMWFlNmI4ODI5NTBjZjdhMzBmNjVmMWViMjQ3OTZmZjc0NGRiYzYxYjY0YzM0NjcwNw==","expires":7200,"url":"https://maaptest.189.cn/maap_message/","errorCode":0}

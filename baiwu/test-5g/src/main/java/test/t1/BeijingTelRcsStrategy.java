@@ -34,7 +34,7 @@ public class BeijingTelRcsStrategy extends TestBjdx implements IRcsMsgStrategy {
     
     
     
-    String token = null; //"accessToken eFNudUgxMk06MWEzMjk0ZGJlMzA5NDg4YzQ5YzA1YzNjMjU3NjViMTM1MjM2ZjZiYmRjNmRlMGIzZTNmNzcyODdjM2JjYzk5NQ==";;
+    String token = "accessToken eFNudUgxMk06OTFmMjA2MWJlYzIyZWM4MzkxN2FjNzg0ZWI2YjhjNTU1NjliNTI4M2IxM2E2NDY4N2YyZGM4YWYxNzExYTkyNw==";
     public static void main(String[] args) {
     	JSONObject sendChannelInfo = new JSONObject();
     	sendChannelInfo.put("fileServerRoot","https://maaptest.189.cn/maap_message");
@@ -48,7 +48,8 @@ public class BeijingTelRcsStrategy extends TestBjdx implements IRcsMsgStrategy {
     	BeijingTelRcsStrategy t = new BeijingTelRcsStrategy("","","");
     	
     	System.out.println("下发文本消息：");
-    	Map<String,Object> map = t.getText("你好chatbot,下行文本消息");
+    	Map<String,Object> map = t.getText("你好,测试下行文本消息");
+    	
     	t.sendRcsMsg(sendChannelInfo,Arrays.asList("15330759941"),JSON.toJSONString(Arrays.asList(map)));
     	
 //    	System.out.println("上传文件：");

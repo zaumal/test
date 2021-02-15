@@ -8,7 +8,8 @@ import util.SHA256Util;
 public class TestFjydtH5 extends AbstractDemo{
 	public TestFjydtH5(String chatbotId,String appid,String password) {
 		super(chatbotId,appid,password);
-		this.sendUrl = "https://test.andfx.net/chatbotim/chatbot/messaging/v1/outbound/" + getchatbotSip() + "/requests";
+//		this.sendUrl = "https://test.andfx.net/chatbotim/chatbot/messaging/v1/outbound/" + getchatbotSip() + "/requests";
+		this.sendUrl = "https://f.10086.cn/5g/v/chatbotim/chatbot/messaging/v1/outbound/" + getchatbotSip() + "/requests";
 	}
 	
 	public static void main(String[] args) {
@@ -28,7 +29,7 @@ public class TestFjydtH5 extends AbstractDemo{
 //		t.requestSugFileXml();
 //		t.requestFileXml();
 //		t.requestSugTextXml();
-//		t.requestTextXml();
+		t.requestTextXml();
 	}
 	
 	FileInfo getFileInfo() {
