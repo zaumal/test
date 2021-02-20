@@ -25,7 +25,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import okhttp3.ConnectionPool;
@@ -58,6 +57,10 @@ public class TestBjdx{
 	protected String downloadUrl;
 	protected String deleteUrl;
 	
+	protected String findChatbotUrl;
+	protected String chatbotOptionUrl;
+	protected String menuUrl;
+	
 	protected String accessToken;
 	
 	protected String getchatbotSip() {
@@ -77,6 +80,9 @@ public class TestBjdx{
 		this.uploadFileUrl = serverRoot + "/bot/v1/" + getchatbotSip() + "/medias/upload";
 		this.downloadUrl = serverRoot + "/bot/v1/" + getchatbotSip() + "/medias/download";
 		this.deleteUrl = serverRoot + "/bot/v1/" + getchatbotSip() + "/medias/delete";
+		this.findChatbotUrl = serverRoot + "/bot/v1/" + getchatbotSip() + "/find/chatBotInfo";
+		this.chatbotOptionUrl = serverRoot + "/bot/v1/" + getchatbotSip() + "/update/chatBotInfo/optionals";
+		this.menuUrl = serverRoot + "/bot/v1/" + getchatbotSip() + "/update/chatBotInfo/menu";
 	}
 	
 	public TestBjdx(String chatbotId,String appid,String appkey) {
@@ -102,18 +108,27 @@ public class TestBjdx{
         //缩略图
 //        t.uploadFile("file/thumbnail2.jpg");
         //下载文件
-//        t.downloadFile("http://124.126.120.102/temp/src/2021012515/29c00/view/36,3c3504f9382c90824e05.png");
+//        t.downloadFile("https://maaptest.189.cn/maap_message/bot/chanageUrl/temp/20210222155750/171008/22,49b11ff12ed3.png");
         //删除文件
-//        t.deleteFile("http://124.126.120.102/temp/src/2021012515/29c00/view/36,3c3504f9382c90824e05.png");
+//        t.deleteFile("https://maaptest.189.cn/maap_message/bot/chanageUrl/temp/20210222155750/171008/22,49b11ff12ed3.png");
         //下发文本消息
 //        t.requestText();
+        //撤回消息
+//        t.revokeMsg();
+        
+        //chatbot信息获取
+//        t.findChatbot();
+        //基本信息
+//        t.chatbotOption();
+        //固定菜单
+        t.chatbotMenu();
         
         //3、文件消息 
 //		t.sendFile();
         //5、富媒体单卡片消息(带 CSS 样式) + Suggestions 
 //        t.sendSigleCard();
         //6、富媒体多卡片消息(带 CSS 样式) + Suggestions 
-		t.sendMultCard();
+//		t.sendMultCard();
 	}
 	
 	String getDuokp() {
@@ -206,6 +221,127 @@ public class TestBjdx{
 		return s;
 	}
 	
+	String chatbotMenu() {
+		String json = "{\r\n" + 
+				"  \"menu\": {\r\n" + 
+				"    \"entries\": [\r\n" + 
+				"      {\r\n" + 
+				"        \"reply\": {\r\n" + 
+				"          \"displayText\": \"简介\",\r\n" + 
+				"          \"postback\": {\r\n" + 
+				"            \"data\": \"set_by_chatbot_reply1\"\r\n" + 
+				"          }\r\n" + 
+				"        }\r\n" + 
+				"      },\r\n" + 
+				"      {\r\n" + 
+				"        \"menu\": {\r\n" + 
+				"          \"displayText\": \"建议操作\",\r\n" + 
+				"          \"entries\": [\r\n" + 
+				"            {\r\n" + 
+				"              \"reply\": {\r\n" + 
+				"                \"displayText\": \"建议回复\",\r\n" + 
+				"                \"postback\": {\r\n" + 
+				"                  \"data\": \"set_by_chatbot_reply2\"\r\n" + 
+				"                }\r\n" + 
+				"              }\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"              \"action\": {\r\n" + 
+				"                \"dialerAction\": {\r\n" + 
+				"                  \"dialPhoneNumber\": {\r\n" + 
+				"                    \"phoneNumber\": \"+8615330759941\"\r\n" + 
+				"                  }\r\n" + 
+				"                },\r\n" + 
+				"                \"displayText\": \"拨打电话\",\r\n" + 
+				"                \"postback\": {\r\n" + 
+				"                  \"data\": \"set_by_chatbot_dial_menu_phone_number\"\r\n" + 
+				"                }\r\n" + 
+				"              }\r\n" + 
+				"            }\r\n" + 
+				"          ]\r\n" + 
+				"        }\r\n" + 
+				"      }\r\n" + 
+				"    ]\r\n" + 
+				"  }\r\n" + 
+				"}";
+		
+		String url = menuUrl;
+		
+		return request(new Request.Builder()
+				.addHeader("authorization", this.accessToken)
+				.url(url)
+				.post(RequestBody.create(json.getBytes(),MediaType.parse("application/json")))
+				.build(),"chatbotMenu");
+	}
+	
+	String chatbotOption() {
+		System.out.println("chatbot基本信息：");
+		String url = chatbotOptionUrl;
+		
+		JSONObject json = new JSONObject();
+		json.put("longitude", "118.1");
+		
+		return request(new Request.Builder()
+				.addHeader("authorization", this.accessToken)
+				.url(url)
+				.post(RequestBody.create(JSON.toJSONString(json).getBytes(),MediaType.parse("application/json")))
+				.build(),"chatbotOption");
+	}
+	
+	String findChatbot() {
+		System.out.println("查询chatbot信息：");
+		String url = findChatbotUrl;
+		
+		return request(new Request.Builder()
+				.addHeader("authorization", this.accessToken)
+				.url(url)
+				.get()
+				.build(),"findChatbot");
+	}
+	
+	String revokeMsg() {
+		System.out.println("发送撤回消息：");
+		String url = revokeUrl;
+        
+		JSONObject json = new JSONObject();
+		json.put("messageId", "cb1188a3-37ec-1037-9254-2ec66e44305b2");
+		json.put("status", "RevokeRequested");
+		json.put("destinationAddress", Arrays.asList("tel:+8615330759941"));
+
+		
+		return request(new Request.Builder()
+				.addHeader("authorization", this.accessToken)
+				.addHeader("accept", "application/json")
+				.addHeader("date", headerDate)
+				.url(url)
+				.post(RequestBody.create(JSON.toJSONString(json).getBytes(),MediaType.parse("application/json")))
+				.build(),"deleteFile");
+	}
+	
+	String deleteFile(String fileUrl) {
+		System.out.println("删除素材文件：");
+		String url = deleteUrl;
+        
+		return request(new Request.Builder()
+				.addHeader("authorization", this.accessToken)
+				.addHeader("url", fileUrl)
+				.url(url)
+				.delete()
+				.build(),"deleteFile");
+	}
+	
+	String downloadFile(String fileUrl) {
+		System.out.println("下载素材文件：");
+		String url = downloadUrl;
+        
+		return request(new Request.Builder()
+				.addHeader("authorization", this.accessToken)
+				.addHeader("url", fileUrl)
+				.url(url)
+				.get()
+				.build(),"downloadFile");
+	}
+	
 	String uploadFile(String filePath) {
 		System.out.println("上传素材文件：");
 		String url = uploadFileUrl;
@@ -215,10 +351,8 @@ public class TestBjdx{
         builder.addFormDataPart("file", file.getName(), RequestBody.create(file,MediaType.parse("*/*")));
         
 		return request(new Request.Builder()
-				.addHeader("Authorization", this.accessToken)
-				.addHeader("accessToken", this.accessToken)
-				.addHeader("accessToken", "accessToken " +this.accessToken)
-				.addHeader("uploadMode", "perm") //perm:永久文件 temp:临时文件
+				.addHeader("authorization", this.accessToken)
+				.addHeader("uploadMode", "temp") //perm:永久文件 temp:临时文件
 				.addHeader("content-type", "multipart/form-data")
 				.url(url)
 				.post(builder.build())
@@ -227,7 +361,8 @@ public class TestBjdx{
 	
 	String getAccessToken() {
 		if(null == this.accessToken || this.accessToken.length() == 0) {
-			String accessToken = readFile("accessToken/bjdx-chatbot");
+			String accessTokenFile = pre + "accessToken";
+			String accessToken = readFile(accessTokenFile);
 			if(null != accessToken && accessToken.trim().length() > 0) {
 				this.accessToken = accessToken.trim();
 			}else {
@@ -250,7 +385,7 @@ public class TestBjdx{
 						.build(),"beijingDxChatbot-getAccessToken");
 				JSONObject jo = JSON.parseObject(response);
 				accessToken = jo.getString("accessToken");
-				writeAccessTokenFile("bjdx-chatbot",accessToken);
+				writeAccessTokenFile(accessTokenFile,accessToken);
 				this.accessToken = accessToken;
 			}
 		}
@@ -364,12 +499,8 @@ public class TestBjdx{
 	
 	String readFile(String filePath) {
 		File file = new File(filePath);
-		while(!file.canRead()) {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		if(!file.exists()) {
+			return null;
 		}
 		
 		InputStream is = null;
@@ -568,6 +699,56 @@ public class TestBjdx{
 				.build(),"sendText");
 	}
 	
+	String getTestFileJson() {
+		return "{\r\n" + 
+				"  \"contributionId\": \"c16b6f43-21dc-4e77-ab2d-19af51be466a\",\r\n" + 
+				"  \"senderAddress\": \"sip:106598858810000006@botplatform.rcs.vnet.cn\",\r\n" + 
+				"  \"destinationAddress\": [\r\n" + 
+				"    \"tel:+8615330759941\"\r\n" + 
+				"  ],\r\n" + 
+				"  \"messageList\": [\r\n" + 
+				"    {\r\n" + 
+				"      \"contentText\": [\r\n" + 
+				"        {\r\n" + 
+				"          \"fileSize\": \"178887\",\r\n" + 
+				"          \"until\": \"2021-11-25T12:17:07Z\",\r\n" + 
+				"          \"type\": \"thumbnail\",\r\n" + 
+				"          \"contentType\": \"image/jpeg\",\r\n" + 
+				"          \"url\": \"https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg\"\r\n" + 
+				"        },\r\n" + 
+				"        {\r\n" + 
+				"          \"fileName\": \"DSC_379395051.JPG\",\r\n" + 
+				"          \"fileSize\": \"178887\",\r\n" + 
+				"          \"until\": \"2021-11-25T12:17:07Z\",\r\n" + 
+				"          \"type\": \"file\",\r\n" + 
+				"          \"contentType\": \"image/jpeg\",\r\n" + 
+				"          \"url\": \"https://maaptest.189.cn/maap_message/bot/chanageUrl/perm/20201219104624/178887/4,04a014d5db9b.jpg\"\r\n" + 
+				"        }\r\n" + 
+				"      ],\r\n" + 
+				"      \"contentEncoding\": \"utf8\",\r\n" + 
+				"      \"contentType\": \"application/vnd.gsma.rcs-ft-http\"\r\n" + 
+				"    }\r\n" + 
+				"  ],\r\n" + 
+				"  \"reportRequest\": [\r\n" + 
+				"    \"sent\",\r\n" + 
+				"    \"failed\",\r\n" + 
+				"    \"delivered\",\r\n" + 
+				"    \"displayed\",\r\n" + 
+				"    \"deliveredToNetwork\"\r\n" + 
+				"  ],\r\n" + 
+				"  \"conversationId\": \"7f77c667-0395-499b-a70a-c0d0f10a443f\",\r\n" + 
+				"  \"messageId\": \"a2581c7f-2092-4d81-12a6-bd8dcf072561\",\r\n" + 
+				"  \"smsSupported\": false,\r\n" + 
+				"  \"storeSupported\": false,\r\n" + 
+				"  \"serviceCapability\": [\r\n" + 
+				"    {\r\n" + 
+				"      \"capabilityId\": \"ChatbotSA\",\r\n" + 
+				"      \"version\": \"+g.gsma.rcs.botversion=\\\"#=1\\\"\"\r\n" + 
+				"    }\r\n" + 
+				"  ]\r\n" + 
+				"}";
+	}
+	
 	String sendFile() {
 		System.out.println("下发文件消息 ：");
 		String url = sendMessageUrl;
@@ -575,7 +756,10 @@ public class TestBjdx{
 		Map<String,Object> file = getFile();
 		
 		Map map = getJSON(file);
-		String body = JSON.toJSONString(map);
+//		String body = JSON.toJSONString(map);
+		
+		String body = getTestFileJson();
+		
         System.out.println("消息体：" + body);
 		return request(new Request.Builder()
 				.addHeader("Authorization", this.accessToken)
@@ -614,14 +798,16 @@ public class TestBjdx{
 		
 		Map<String,Object> map = getJSON(getText("你好chatbot,下行文本消息"));
         
+		String body = JSON.toJSONString(map);
+		System.out.println("request body:");
+		System.out.println(body);
+		
 		return request(new Request.Builder()
-				.addHeader("Authorization", "accessToken " + this.accessToken)
-				.addHeader("accessToken", this.accessToken)
-				.addHeader("accessToken", "accessToken " +this.accessToken)
-				.addHeader("Content-Type", "application/json")
-				.addHeader("Date", this.headerDate)
+				.addHeader("Authorization", this.accessToken)
+//				.addHeader("Content-Type", "application/json")
+//				.addHeader("Date", this.headerDate)
 				.url(url)
-				.post(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.post(RequestBody.create(body,MediaType.parse("application/json")))
 				.build(),"sendText");
 	}
 	

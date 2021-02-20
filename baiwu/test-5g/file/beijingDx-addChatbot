@@ -6,3 +6,5 @@
 2021-01-27 18:02:56 : {"code":20002,"message":"上传参数异常，请检查category参数"}
 2021-01-27 18:03:16 : {"code":46005,"message":"当前csp客户状态为不可用"}
 2021-01-28 10:39:03 : {"code":0,"data":{"accessTagNo":"a7d256eab9cf45a8be92972f6d78cf96"},"message":"success"}
+2021-02-19 15:50:14 : {"code":20002,"message":"sip:chatbotId格式错误,chatBotId=(csp接入码+自定义号码)@botplatform.rcs.vnet.cn"}
+2021-02-19 15:51:05 : {"code":20002,"message":"chatbotId参数只能为数字"}

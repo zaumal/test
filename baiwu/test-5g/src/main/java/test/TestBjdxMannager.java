@@ -46,6 +46,8 @@ public class TestBjdxMannager {
 	private String accessTokenUrl = "https://isptest.189.cn/cspApi/v1/accessToken";
 	private String uploadCustomerFileUrl = "https://isptest.189.cn/cspApi/v1/uploadFile";
 	private String addCustomerUrl = "https://isptest.189.cn/cspApi/v1/cspCustomer/addcspCustomer";
+	private String editCustomerUrl = "https://isptest.189.cn/cspApi/v1/cspCustomer/editcspCustomer";
+	private String deleteCustomerUrl = "https://isptest.189.cn/cspApi/v1/deleteCustomer";
 	private String selectCustomerUrl = "https://isptest.189.cn/cspApi/v1/selectCspCustomer";
 	private String uploadChatbotFileUrl = "https://isptest.189.cn/cspApi/v1/Chatbot/uploadChatbotFile";
 	private String addChatbotUrl = "https://isptest.189.cn/cspApi/v1/Chatbot/addChatbot";
@@ -86,6 +88,11 @@ public class TestBjdxMannager {
 		
 		//新增客户
 //		t.addCustomer();
+//		t.addCustomer2();
+		//变更客户
+//		t.editCustomer();
+		//删除客户
+//		t.deleteCustomer();
 		//查询客户
 //		t.selectCustomer();
 		
@@ -98,11 +105,13 @@ public class TestBjdxMannager {
 		//新增chatbot
 //		t.addChatbot();
 		
+		t.addChatbot2();
+		
 		//上线chatbot
 //		t.updateOnline();
 		
 		//开发者配置
-		t.updateDeveloper();
+//		t.updateDeveloper();
 	}
 	
 	public String updateOnline() {
@@ -149,6 +158,46 @@ public class TestBjdxMannager {
 				.build();
 		String response = request(request);
 		writeFile("beijingDx-updateDeveloper",response);
+		return response;
+	}
+	
+	public String addChatbot2() {
+		System.out.println("新增chatbot：");
+		String url = addChatbotUrl;
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("cspId", "C121000006");//CSP 编码
+		map.put("cspEcNo", "C12100000600001");//客户识别码
+		map.put("chatbotId", "106598858810000007");//ChatbotId：接入号码+自定义号码（ChatbotId 一旦创建不可修改）
+		map.put("serviceName", "集微科技2");//Chatbot 服务名称
+		map.put("serviceIcon", "https://maaptest.189.cn/maap_message/bot/chanageUrl/head/20210130173059/5355/3,41565fa3f6fc.png");//Chatbot logo 路径
+		//Chatbot 描述信息
+		map.put("serviceDescription", "厦门集微科技有限公司致力于为广大客户提供更专业的全球化企业通信服务，是以5G、互联网+、物联网+及人工智能等高科技为驱动的国家高新技术企业。");
+		map.put("SMSNumber", "106598858810000007");//Chatbot 短信端口号=chatbotId 中(接入号码+自定义号码)
+		map.put("autograph", "集微科技2");//Chatbot 签名
+		map.put("category", new String[] {"1"});//Chatbot 分类即行业类别分类，详见行业类型字典表，当前只支持单一行业类型
+		map.put("provider", "厦门集微科技有限公司");//Chatbot 提供者名称
+		map.put("showProvider", "1");//是否显示Chatbot提供者名称，1：显示，0：不显示
+		map.put("TCPage", "http://www.jiweitech.com");//Chatbot 服务条款
+		map.put("emailAddress", "2638343851@qq.com");//Chatbot 邮箱
+		map.put("serviceWebsite", "http://www.jiweitech.com");//Chatbot 官网(主页地址)
+		map.put("callBackNumber", "0592-6190616");//Chatbot 服务电话
+		map.put("address", "福建省厦门市集美区");//Chatbot 办公地址
+		map.put("longitude", "118.049");//Chatbot 地理经度
+		map.put("latitude", "24.621");//Chatbot 地理纬度
+		map.put("ipWhiteList", new String[] {"124.239.146.131","36.110.62.178"});//IP 地址白名单 (最多 15 个)
+		
+		Request request = new Request.Builder()
+				.url(url)
+				.addHeader("timestamp", timestamp)
+				.addHeader("nonce", nonce)
+				.addHeader("signature", signature)
+				.addHeader("authorization", accessToken)
+				.addHeader("content-type","application/json")
+				.post(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.build();
+		String response = request(request);
+		writeFile("beijingDx-addChatbot",response);
 		return response;
 	}
 	
@@ -220,7 +269,8 @@ public class TestBjdxMannager {
 		String url = selectCustomerUrl;
 		
 		Map<String,String> map = new HashMap<>();
-		map.put("cspEcNo", "C12100000600001");
+//		map.put("cspEcNo", "C12100000600001");
+		map.put("cspEcNo", "C12100000600002");
 		
 		Request request = new Request.Builder()
 				.url(url)
@@ -233,6 +283,160 @@ public class TestBjdxMannager {
 				.build();
 		String response = request(request);
 		writeFile("beijingDx-selectCustomer",response);
+		return response;
+	}
+	
+	public String deleteCustomer() {
+		System.out.println("删除客户资料：");
+		String url = deleteCustomerUrl;
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("cspEcNo", "C12100000600002");//客户编码
+		
+		Request request = new Request.Builder()
+				.url(url)
+				.addHeader("timestamp", timestamp)
+				.addHeader("nonce", nonce)
+				.addHeader("signature", signature)
+				.addHeader("authorization", accessToken)
+				.addHeader("content-type","application/json")
+				.delete(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.build();
+		String response = request(request);
+		writeFile("beijingDx-deleteCustomer",response);
+		return response;
+	}
+	
+	public String editCustomer() {
+		System.out.println("变更客户资料：");
+		String url = editCustomerUrl;
+		
+		Map<String,Object> map = new HashMap<>();
+		//客户基本信息
+		Map<String,String> rcsRegisterInfo = new HashMap<>();
+		rcsRegisterInfo.put("ecName", "集微科技"); //客户名称
+		rcsRegisterInfo.put("businessType", "1");//行业类型
+		rcsRegisterInfo.put("ecGrade", "3");//标准级
+		rcsRegisterInfo.put("cspEcNo", "C12100000600002");//客户编码
+		map.put("rcsRegisterInfo",rcsRegisterInfo);
+		
+		//客户企业信息
+		Map<String,Object> rcsInfo = new HashMap<>();
+		//企业介绍
+		rcsInfo.put("introduce", "厦门集微科技有限公司致力于为广大客户提供更专业的全球化企业通信服务，是以5G、互联网+、物联网+及人工智能等高科技为驱动的国家高新技术企业。公司主要为企业客户提供企业短信、企业语音客户服务热线（含95、1010、10195码号）、5G消息、物联网、集微私有云、人工智能、大象能力平台等产品服务，为移动互联网、金融、电商、交通运输等众多行业提供企业通信解决方案。\r\n" + 
+				"集微科技是中国三大电信运营商及国际运营商的密切合作伙伴，在企业通信的技术平台、产品服务、行业解决方案等多领域实现了合作，并积累了丰富的企业通信服务经验。同时，集微致力于整合企业通信产品生态，承载企业通信支撑一条龙服务。\r\n" + 
+				"截至目前，集微已为京东、58同城、国美在线、唯品会等诸多国内外知名企业提供企业通信服务，业务覆盖中国多个地区及境外，有效推动了通信技术与传统产业的跨界结合。\r\n");
+		rcsInfo.put("serviceIcon", "http://172.17.25.10:9081/7,0f23bc123477");//企业 logo
+		rcsInfo.put("workPhone", "0592-6190616");//办公电话
+		rcsInfo.put("businessLicense", "http://172.17.25.10:9081/7,0f2878ebc4ef");//企业营业执照
+		rcsInfo.put("businessAddress", "福建省厦门市集美区");//企业所在地
+        rcsInfo.put("province", "福建省");//省份
+		rcsInfo.put("city", "厦门市");//市
+		rcsInfo.put("area", "集美区");//区
+		rcsInfo.put("operatorName", "傅竞捷");//客户联系人
+		rcsInfo.put("operatorCard", "350583198812276630");//客户联系人身份证号
+		rcsInfo.put("operatorPhone", "18518258756");//客户联系人手机号
+		rcsInfo.put("emailAddress", "2638343851@qq.com");//客户联系人邮箱
+		//客户联系人身份证正反面文件地址
+		rcsInfo.put("operatorIdentityPic", new String[]{"http://172.17.25.10:9081/7,0f26848e2376","http://172.17.25.10:9081/7,0f274f422229"});
+        map.put("rcsInfo",rcsInfo);
+        
+        //合同信息
+        Map<String,String> rcsContractInformation = new HashMap<>();
+		rcsContractInformation.put("contractNo", "5G-JW-2015301");//合同编码
+		rcsContractInformation.put("name", "集微科技有限公司5G消息业务合同");//合同名称
+		rcsContractInformation.put("effectiveDate", "20210127152126");//合同 效日期 ，yyyyMMddHHmmss
+		rcsContractInformation.put("expiryDate", "20220127152126");//合同失效日期 ，yyyyMMddHHmmss
+		rcsContractInformation.put("status", "2");//合同是否续签(1.是 2.否)
+//        rcsContractInformation.put("renewalDate", "");//合同续签日期 ，yyyyMMddHHmmss
+		rcsContractInformation.put("accessory", "http://172.17.25.10:9081/7,0f2878ebc4ef");//合同附件，需使用客户资料上传接口返回的 url
+        map.put("rcsContractInformation",rcsContractInformation);
+        
+        //客户法人信息
+        Map<String,String> rcsLegalP = new HashMap<>();
+		rcsLegalP.put("legalName", "傅竞");//法人名称
+		rcsLegalP.put("legalIdentification", "350583198812276630");//法人身份证号
+		rcsLegalP.put("identificationStraight", "http://172.17.25.10:9081/7,0f26848e2376");//法人身份证正面文件地址
+		rcsLegalP.put("identificationCounter", "http://172.17.25.10:9081/7,0f274f422229");//法人身份证反面文件地址
+        map.put("rcsLegalP",rcsLegalP);
+		
+		Request request = new Request.Builder()
+				.url(url)
+				.addHeader("timestamp", timestamp)
+				.addHeader("nonce", nonce)
+				.addHeader("signature", signature)
+				.addHeader("authorization", accessToken)
+				.addHeader("content-type","application/json")
+				.post(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.build();
+		String response = request(request);
+		writeFile("beijingDx-editCustomer",response);
+		return response;
+	}
+	
+	public String addCustomer2() {
+		System.out.println("上传客户资料：");
+		String url = addCustomerUrl;
+		
+		Map<String,Object> map = new HashMap<>();
+		//客户基本信息
+		Map<String,String> rcsRegisterInfo = new HashMap<>();
+		rcsRegisterInfo.put("ecName", "集微科技"); //客户名称
+		rcsRegisterInfo.put("businessType", "1");//行业类型
+		rcsRegisterInfo.put("ecGrade", "3");//标准级
+		map.put("rcsRegisterInfo",rcsRegisterInfo);
+		
+		//客户企业信息
+		Map<String,Object> rcsInfo = new HashMap<>();
+		//企业介绍
+		rcsInfo.put("introduce", "厦门集微科技有限公司致力于为广大客户提供更专业的全球化企业通信服务，是以5G、互联网+、物联网+及人工智能等高科技为驱动的国家高新技术企业。公司主要为企业客户提供企业短信、企业语音客户服务热线（含95、1010、10195码号）、5G消息、物联网、集微私有云、人工智能、大象能力平台等产品服务，为移动互联网、金融、电商、交通运输等众多行业提供企业通信解决方案。\r\n" + 
+				"集微科技是中国三大电信运营商及国际运营商的密切合作伙伴，在企业通信的技术平台、产品服务、行业解决方案等多领域实现了合作，并积累了丰富的企业通信服务经验。同时，集微致力于整合企业通信产品生态，承载企业通信支撑一条龙服务。\r\n" + 
+				"截至目前，集微已为京东、58同城、国美在线、唯品会等诸多国内外知名企业提供企业通信服务，业务覆盖中国多个地区及境外，有效推动了通信技术与传统产业的跨界结合。\r\n");
+		rcsInfo.put("serviceIcon", "http://172.17.25.10:9081/7,0f23bc123477");//企业 logo
+		rcsInfo.put("workPhone", "0592-6190616");//办公电话
+		rcsInfo.put("businessLicense", "http://172.17.25.10:9081/7,0f2878ebc4ef");//企业营业执照
+		rcsInfo.put("businessAddress", "福建省厦门市集美区");//企业所在地
+        rcsInfo.put("province", "福建省");//省份
+		rcsInfo.put("city", "厦门市");//市
+		rcsInfo.put("area", "集美区");//区
+		rcsInfo.put("operatorName", "傅竞捷");//客户联系人
+		rcsInfo.put("operatorCard", "350583198812276630");//客户联系人身份证号
+		rcsInfo.put("operatorPhone", "18518258756");//客户联系人手机号
+		rcsInfo.put("emailAddress", "2638343851@qq.com");//客户联系人邮箱
+		//客户联系人身份证正反面文件地址
+		rcsInfo.put("operatorIdentityPic", new String[]{"http://172.17.25.10:9081/7,0f26848e2376","http://172.17.25.10:9081/7,0f274f422229"});
+        map.put("rcsInfo",rcsInfo);
+        
+        //合同信息
+        Map<String,String> rcsContractInformation = new HashMap<>();
+		rcsContractInformation.put("contractNo", "5G-JW-2015301");//合同编码
+		rcsContractInformation.put("name", "集微科技有限公司5G消息业务合同");//合同名称
+		rcsContractInformation.put("effectiveDate", "20210127152126");//合同 效日期 ，yyyyMMddHHmmss
+		rcsContractInformation.put("expiryDate", "20220127152126");//合同失效日期 ，yyyyMMddHHmmss
+		rcsContractInformation.put("status", "2");//合同是否续签(1.是 2.否)
+//        rcsContractInformation.put("renewalDate", "");//合同续签日期 ，yyyyMMddHHmmss
+		rcsContractInformation.put("accessory", "http://172.17.25.10:9081/7,0f2878ebc4ef");//合同附件，需使用客户资料上传接口返回的 url
+        map.put("rcsContractInformation",rcsContractInformation);
+        
+        //客户法人信息
+        Map<String,String> rcsLegalP = new HashMap<>();
+		rcsLegalP.put("legalName", "傅竞捷");//法人名称
+		rcsLegalP.put("legalIdentification", "350583198812276630");//法人身份证号
+		rcsLegalP.put("identificationStraight", "http://172.17.25.10:9081/7,0f26848e2376");//法人身份证正面文件地址
+		rcsLegalP.put("identificationCounter", "http://172.17.25.10:9081/7,0f274f422229");//法人身份证反面文件地址
+        map.put("rcsLegalP",rcsLegalP);
+		
+		Request request = new Request.Builder()
+				.url(url)
+				.addHeader("timestamp", timestamp)
+				.addHeader("nonce", nonce)
+				.addHeader("signature", signature)
+				.addHeader("authorization", accessToken)
+				.addHeader("content-type","application/json")
+				.post(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.build();
+		String response = request(request);
+		writeFile("beijingDx-addCustomer",response);
 		return response;
 	}
 	

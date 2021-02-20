@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -24,8 +25,8 @@ public class TestLnlt extends TestBjdx{
 	}
 	
 	public static void main(String[] args) {
-		//和选电商
-		String chatbotId = "10655210001";
+		//集微IoT
+		String chatbotId = "12580012011402";
 		String appid = "40c59571cd954e1eb602a5698aa9ddaa";
 		String password = "9f39ffbd1576426b856506af248eab56";
 		String accessToken = "jiweikeji1";
@@ -56,7 +57,7 @@ public class TestLnlt extends TestBjdx{
 		//4、地理位置回落消息 
 //		t.sendGeo();
 		//5、富媒体单卡片消息(带 CSS 样式) + Suggestions 
-		t.sendSigleCard();
+//		t.sendSigleCard();
 		//6、富媒体多卡片消息(带 CSS 样式) + Suggestions 
 //		t.sendMultCard();
 		
@@ -64,7 +65,12 @@ public class TestLnlt extends TestBjdx{
 //		t.sendRevoke("");
 		
 		//上传素材
-		t.uploadFile("");
+//		t.uploadFile("D:\\prodata\\github\\test\\baiwu\\test-5g\\file\\image2.png");
+//		t.uploadFile("D:\\prodata\\github\\test\\baiwu\\test-5g\\file\\thumbnail2.jpg");
+	}
+	
+	String getAccessToken() {
+		return this.accessToken = "accessToken " + super.getAccessToken();
 	}
 }
 
