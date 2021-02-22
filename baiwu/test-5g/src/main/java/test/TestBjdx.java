@@ -67,7 +67,7 @@ public class TestBjdx{
 		return "sip:" + this.chatbotId + "@botplatform.rcs.vnet.cn";
 	}
 	
-	protected String headerDate = DateUtil.getHttpHeaderDate();;// Tue, 15 Nov 2019 08:12:31 GMT
+	protected String headerDate = DateUtil.getHttpHeaderDate();// Tue, 15 Nov 2019 08:12:31 GMT
 	
 	protected String chatbotId;
 	protected String appId;
@@ -91,7 +91,7 @@ public class TestBjdx{
 		this.appkey = appkey;
 	}
 	
-	protected String phone = "tel:+8615330759941";
+	protected String phone = "tel:+8615301356385";
 	public static void main(String[] args) {
 		//集微科技
 		String chatbotId = "106598858810000006";
@@ -121,12 +121,12 @@ public class TestBjdx{
         //基本信息
 //        t.chatbotOption();
         //固定菜单
-        t.chatbotMenu();
+//        t.chatbotMenu();
         
         //3、文件消息 
 //		t.sendFile();
         //5、富媒体单卡片消息(带 CSS 样式) + Suggestions 
-//        t.sendSigleCard();
+        t.sendSigleCard();
         //6、富媒体多卡片消息(带 CSS 样式) + Suggestions 
 //		t.sendMultCard();
 	}
@@ -353,6 +353,7 @@ public class TestBjdx{
 		return request(new Request.Builder()
 				.addHeader("authorization", this.accessToken)
 				.addHeader("uploadMode", "temp") //perm:永久文件 temp:临时文件
+//				.addHeader("uploadMode", "perm") //perm:永久文件 temp:临时文件
 				.addHeader("content-type", "multipart/form-data")
 				.url(url)
 				.post(builder.build())
@@ -525,20 +526,23 @@ public class TestBjdx{
 	}
 	
 	String sendRevoke(String messageId) {
-		System.out.println("富媒体多卡片消息(带 CSS 样式) + Suggestions ");
-		String url = sendMessageUrl;
+		System.out.println("撤回消息 ");
+		String url = revokeUrl;
 		
 		Map<String,Object> map = new HashMap<>();
 		map.put("messageId", messageId);
 		map.put("status", "RevokeRequested");
 		map.put("destinationAddress", Arrays.asList("tel:+86"+phone));
         
+		String body = JSON.toJSONString(map);
+		System.out.println("消息体：" + body);
+		
 		return request(new Request.Builder()
 				.addHeader("Authorization", this.accessToken)
 				.addHeader("Content-Type", "application/json")
 				.addHeader("Date", this.headerDate)
 				.url(url)
-				.post(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.post(RequestBody.create(body,MediaType.parse("application/json")))
 				.build(),"sendRevoke");
 	}
 	
@@ -546,13 +550,13 @@ public class TestBjdx{
 		System.out.println("富媒体多卡片消息(带 CSS 样式) + Suggestions ");
 		String url = sendMessageUrl;
 		
-		Map<String,Object> card1 = getSignleCard();
-		Map<String,Object> card2 = getSignleCard();
-		
-		Map map = getJSON(card1,card2);
-//        Strig body = JSON.toJSONString(map);
+		Map<String,Object> card = getMutlCard();
+		Map map = getJSON(card);
+        String body = JSON.toJSONString(map);
         
-		String body = getDuokp();
+        //电信测试
+//		String body = getDuokp();
+        
 		System.out.println("消息体：" + body);
 		
 		return request(new Request.Builder()
@@ -564,6 +568,82 @@ public class TestBjdx{
 				.build(),"sendText");
 	}
 	
+	Map<String,Object> getMutlCardContent3(){
+		Map<String,Object> content = new HashMap<String,Object>();
+		Map<String,Object> media = new HashMap<String,Object>();
+		
+		media.put("mediaUrl", "http://47.103.149.126:8001/bot/v1/medias/fid/523006452186980352");
+		media.put("mediaContentType", "image/mp4");
+		media.put("mediaFileSize", "660976");
+		media.put("thumbnailUrl", "http://47.103.149.126:8001/bot/v1/medias/fid/522991713738268672");
+		media.put("thumbnailContentType", "image/jpg");
+		media.put("thumbnailFileSize", "9216");
+		media.put("height", "SHORT_HEIGHT");
+		
+		content.put("media", media);
+		content.put("title", "这是一个卡片消息");
+		content.put("description", "这是卡片消息的描述，如果超过了卡片的最大宽度和高度，描述内容会被省略");
+		
+		content.put("suggestions", Arrays.asList(getReply("确定"),getReply("取消"),getUrlAction(),getDialerAction()));
+		return content;
+	}
+	
+	Map<String,Object> getMutlCardContent2(){
+		Map<String,Object> content = new HashMap<String,Object>();
+		Map<String,Object> media = new HashMap<String,Object>();
+		
+		media.put("mediaUrl", "http://47.103.149.126:8001/bot/v1/medias/fid/522995847191306240");
+		media.put("mediaContentType", "audio/amr");
+		media.put("mediaFileSize", "2758");
+		media.put("height", "SHORT_HEIGHT");
+		
+		content.put("media", media);
+		content.put("title", "这是一个卡片消息");
+		content.put("description", "这是单卡片消息的描述，如果超过了卡片的最大宽度和高度，描述内容会被省略");
+		
+		content.put("suggestions", Arrays.asList(getReply("确定"),getReply("取消"),getUrlAction(),getDialerAction()));
+		return content;
+	}
+	
+	Map<String,Object> getMutlCardContent1(){
+		Map<String,Object> content = new HashMap<String,Object>();
+		Map<String,Object> media = new HashMap<String,Object>();
+		
+		media.put("mediaUrl", "http://47.103.149.126:8001/bot/v1/medias/fid/522989500022366208");
+		media.put("mediaContentType", "image/png");
+		media.put("mediaFileSize", "171008");
+		media.put("thumbnailUrl", "http://47.103.149.126:8001/bot/v1/medias/fid/522991713738268672");
+		media.put("thumbnailContentType", "image/jpg");
+		media.put("thumbnailFileSize", "9216");
+		media.put("height", "SHORT_HEIGHT");
+		
+		content.put("media", media);
+		content.put("title", "这是一个卡片消息");
+		content.put("description", "这是单卡片消息的描述，如果超过了卡片的最大宽度和高度，描述内容会被省略");
+		
+		content.put("suggestions", Arrays.asList(getReply("确定"),getReply("取消"),getUrlAction(),getDialerAction()));
+		return content;
+	}
+	
+	Map<String,Object> getMutlCard(){
+		Map<String,Object> result = new HashMap<>();
+		result.put("contentType","application/vnd.gsma.botmessage.v1.0+json");
+		Map<String,Object> contentText = new HashMap<String,Object>();
+		Map<String,Object> message = new HashMap<String,Object>();
+		Map<String,Object> generalPurposeCard = new HashMap<String,Object>();
+		
+		Map<String,Object> layout = new HashMap<String,Object>();
+		layout.put("cardWidth", "MEDIUM_WIDTH");
+//		layout.put("style", "http://example.com/default.css");
+		generalPurposeCard.put("layout", layout);
+
+		generalPurposeCard.put("content", Arrays.asList(getMutlCardContent1(),getMutlCardContent2(),getMutlCardContent3()));
+		message.put("generalPurposeCardCarousel", generalPurposeCard);
+		contentText.put("message", message);
+		result.put("contentText", contentText);
+		return result;
+	}
+	
 	String sendSigleCard() {
 		System.out.println("富媒体单卡片消息(带 CSS 样式) + Suggestions ：");
 		String url = sendMessageUrl;
@@ -572,8 +652,11 @@ public class TestBjdx{
 		
 		Map map = getJSON(card);
 //        String body = JSON.toJSONString(map);
+		
+		//电信测试
 		String body = getDkp();
-        System.out.println(body);
+        
+		System.out.println(body);
 		return request(new Request.Builder()
 				.addHeader("Authorization", this.accessToken)
 				.addHeader("accessToken", this.accessToken)
@@ -647,7 +730,7 @@ public class TestBjdx{
 				"                  \"action\": {\r\n" + 
 				"                    \"dialerAction\": {\r\n" + 
 				"                      \"dialPhoneNumber\": {\r\n" + 
-				"                        \"phoneNumber\": \"+8615330759941\"\r\n" + 
+				"                        \"phoneNumber\": \"+8615301356385\"\r\n" + 
 				"                      }\r\n" + 
 				"                    },\r\n" + 
 				"                    \"displayText\": \"拨打号码\",\r\n" + 
@@ -665,7 +748,7 @@ public class TestBjdx{
 				"  ],\r\n" + 
 				"  \"trafficType\": \"advertisement\",\r\n" + 
 				"  \"destinationAddress\": [\r\n" + 
-				"    \"tel:+8615330759941\"\r\n" + 
+				"    \"tel:+8615301356385\"\r\n" + 
 				"  ],\r\n" + 
 				"  \"senderAddress\": \"sip:106598858810000006@botplatform.rcs.vnet.cn\",\r\n" + 
 				"  \"smsSupported\": false,\r\n" + 
@@ -690,12 +773,15 @@ public class TestBjdx{
 		
 		Map map = getJSON(text);
         
+		String body = JSON.toJSONString(map);
+		System.out.println("消息体："+body);
+		
 		return request(new Request.Builder()
 				.addHeader("Authorization", this.accessToken)
 				.addHeader("Content-Type", "application/json")
 				.addHeader("Date", this.headerDate)
 				.url(url)
-				.post(RequestBody.create(JSON.toJSONString(map),MediaType.parse("application/json")))
+				.post(RequestBody.create(body,MediaType.parse("application/json")))
 				.build(),"sendText");
 	}
 	
@@ -756,9 +842,10 @@ public class TestBjdx{
 		Map<String,Object> file = getFile();
 		
 		Map map = getJSON(file);
-//		String body = JSON.toJSONString(map);
+		String body = JSON.toJSONString(map);
 		
-		String body = getTestFileJson();
+		//电信
+//		String body = getTestFileJson();
 		
         System.out.println("消息体：" + body);
 		return request(new Request.Builder()
