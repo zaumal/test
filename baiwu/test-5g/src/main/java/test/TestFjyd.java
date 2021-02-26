@@ -34,6 +34,25 @@ public class TestFjyd extends TestFjydtH5{
 	}
 
 	public static void main(String[] args) {
+		String cspToken = "NzYyMjc5MTQ2OTExMzU3ZjE3ZjhlZjI5OWNkY2U5NTE3NTZmYzA3MDg0YTQ4ZjRlMWUxNDIyODYwY2NiODExZA==";
+		String cspId = "202102240001";
+		String chatbotId = "2021022410001";
+
+		TestFjyd t = new TestFjyd(chatbotId,cspId,cspToken);
+		//移动号码
+		t.phone = "15811491455";
+
+//		t.requestSugDuokpXml();
+//		t.requestDuokpXml();
+//		t.requestSugDkpXml();
+//		t.requestDkpXml();
+//		t.requestSugFileXml();
+//		t.requestFileXml();
+//		t.requestSugTextXml();
+		t.requestTextXml();
+	}
+
+	public static void main2(String[] args) {
 		//集微科技
 //		String appid = "125200401111382";
 //		String appSecret = "xH837(h2P0Q*rZ5U";

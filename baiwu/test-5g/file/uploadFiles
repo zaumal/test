@@ -132,3 +132,15 @@ xmlns:e="urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext">
 <e:branded-url>https://1/s/W4ealmAAAvA.JPG</e:branded-url>
 </file-info>
 </file>
+2021-02-24 20:09:16 : 
+tid : cbbc43f6-682d-4224-9b3b-74975466e644
+
+2021-02-24 20:14:32 : 
+tid : 3f6d2da0-5ad7-48fc-a273-3f96a3d8444f
+
+2021-02-24 20:21:20 : 
+tid : 07f1e57a-5dcc-4d20-92ed-057b751577c4
+{"timestamp":"2021-02-24T12:21:20.274+00:00","status":500,"error":"Internal Server Error","message":"","path":"/Content"}
+2021-02-24 20:24:40 : 
+tid : a3ec41a9-fd6a-4791-8a83-5b604fd9780e
+

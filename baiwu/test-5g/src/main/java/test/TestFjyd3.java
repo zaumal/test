@@ -1,26 +1,34 @@
 package test;
 
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+import util.CloseUtil;
+import util.SHA256Util;
+
+import java.io.*;
 import java.util.Base64;
 import java.util.UUID;
 
-import util.SHA256Util;
+public class TestFjyd3 extends AbstractDemo3{
+	protected String host = "cmic-csp-cgw.cmicmaap.com";
 
-public class TestFjydtH5 extends AbstractDemo{
-	public TestFjydtH5(String chatbotId,String appid,String password) {
-		super(chatbotId,appid,password);
-//		this.sendUrl = "https://test.andfx.net/chatbotim/chatbot/messaging/v1/outbound/" + getchatbotSip() + "/requests";
-		this.sendUrl = "https://f.10086.cn/5g/v/chatbotim/chatbot/messaging/v1/outbound/" + getchatbotSip() + "/requests";
+	public TestFjyd3(String chatbotId, String cspId, String cspToken,String serverRoot,String fileServerRoot,String phone) {
+		super(chatbotId,cspId,cspToken,serverRoot,fileServerRoot);
+		this.phone = "+86"+phone;
 	}
 	
 	public static void main(String[] args) {
-		//集微科技
-		String chatbotId = "12520020000120";
-		String appid = "iap_12520020000120";
-		String password = "4f95d15126615625250926f3747dd5861b745927ce58051295989de43deeb120";
-		
-		TestFjydtH5 t = new TestFjydtH5(chatbotId,appid,password);
-		//移动号码
-		t.phone = "15811491455";
+		String cspToken = "NzYyMjc5MTQ2OTExMzU3ZjE3ZjhlZjI5OWNkY2U5NTE3NTZmYzA3MDg0YTQ4ZjRlMWUxNDIyODYwY2NiODExZA==";
+		String cspId = "202102240001";
+		String chatbotId = "2021022410001";
+		String serverRoot = "https://cmic-csp-cgw.cmicmaap.com";
+		String fileServerRoot = "https://cmic-csp-cgw.cmicmaap.com";
+
+		String phone = "15132291613";
+
+		TestFjyd3 t = new TestFjyd3(chatbotId,cspId,cspToken,serverRoot,fileServerRoot,phone);
 		
 //		t.requestSugDuokpXml();
 //		t.requestDuokpXml();
@@ -30,8 +38,81 @@ public class TestFjydtH5 extends AbstractDemo{
 //		t.requestFileXml();
 //		t.requestSugTextXml();
 		t.requestTextXml();
+
+//		t.requestFileUpload();
+
+//		t.downloadFile("https://http01.hzq.rcs.chinamobile.com:9091/Access/PF?ID=MUQzM0NERUFGM0MzRUExQTQ2M0I2NjY4Q0MyNDkyOEZFNzZGNkZFRTVDMzNGNjM1REY5MDg5OThERDZFQUY4MDExRjAyODkzQUE2QUQ3MzU2NkVFQzdERTJEQTQ0QzM2");
+
+		t.revokeMessage("50c73aab-95d9-4081-bb9c-6d11e90a6b8f");
 	}
-	
+
+
+	void downloadFile2(String fileUrl) {
+		System.out.println("下载文件：");
+
+		System.out.println("request ---------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ");
+		System.out.println(fileUrl);
+
+		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+		requestFactory.setConnectTimeout(10000);// 设置超时
+		requestFactory.setReadTimeout(10000);
+		RestTemplate restTemplate = new RestTemplate(requestFactory);
+
+		InputStream is = null;
+		OutputStream os = null;
+		try {
+			ResponseEntity<byte[]> response = restTemplate.exchange(fileUrl, HttpMethod.GET, getRequest(null), byte[].class);
+
+			System.out.println("response ---------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>: ");
+			System.out.println(response);
+			System.out.println();
+
+			String filename = getFileName(response.getHeaders());
+
+			if(null != filename) {
+				is = new ByteArrayInputStream(response.getBody());
+
+				String filePath = "tmp/" + filename;
+
+				File file = new File(filePath);
+
+				os = new FileOutputStream(file);
+
+				int len = 0;
+				byte[] buf = new byte[1024];
+				while((len = is.read(buf,0,1024)) != -1) {
+					os.write(buf,0,len);
+				}
+				os.flush();
+
+				System.out.println("下载成功：" + filePath);
+			}else {
+				System.out.println("下载失败：" + new String(response.getBody()));
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			CloseUtil.close(is);
+			CloseUtil.close(os);
+		}
+	}
+
+	void requestFileUpload() {
+		//图片
+//		String thumbnail = "D:\\prodata\\github\\test\\baiwu\\test-5g\\file\\thumbnail2.jpg";
+//		String thumbnailType = "image/jpg";
+//		String file = "D:\\prodata\\github\\test\\baiwu\\test-5g\\file\\image2.png";
+//		String fileType = "image/png";
+
+		String thumbnail = "D:\\prodata\\github\\test\\baiwu\\test-5g\\file\\thumbnail2.jpg";
+		String thumbnailType = "image/jpg";
+		String file = "D:\\prodata\\github\\test\\baiwu\\test-5g\\file\\video1.mp4";
+		String fileType = "image/png";
+
+		uploadFile(thumbnail,thumbnailType, file,fileType);
+	}
+
+
 	FileInfo3 getFileInfo() {
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
 				"<file\r\n" + 
@@ -216,20 +297,36 @@ public class TestFjydtH5 extends AbstractDemo{
 	String getFile() {
 		FileInfo3 fileInfo = getFileInfo();
 		
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
-				"<file xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\">\r\n" + 
-				"    <file-info type=\"thumbnail\">\r\n" + 
-				"        <file-size>" + fileInfo.thumbnailFileSize + "</file-size>\r\n" + 
-				"        <content-type>" + fileInfo.thumbnailFileType + "</content-type>\r\n" + 
-				"        <data url=\"" + fileInfo.thumbnailFileUrl + "\"/>\r\n" + 
-				"    </file-info>\r\n" + 
-				"    <file-info type=\"file\">\r\n" + 
-				"        <file-size>" + fileInfo.fileSize +"</file-size>\r\n" + 
-				"        <file-name>" + fileInfo.fileName + "</file-name>\r\n" + 
-				"        <content-type>" + fileInfo.fileType + "</content-type>\r\n" + 
-				"        <data url=\"" + fileInfo.fileUrl + "\"/>\r\n" + 
-				"    </file-info>\r\n" + 
-				"</file>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+				"<file xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\" xmlns:e=\"urn:gsma:params:xml:ns:rcs:rcs:up:fthttpext\">\n" +
+				"\t<file-info type=\"thumbnail\">\n" +
+				"\t\t<file-size>\n" +
+				"\t\t\t6624\n" +
+				"\t\t</file-size>\n" +
+				"\t\t<content-type>\n" +
+				"\t\t\timage/jpeg\n" +
+				"\t\t</content-type>\n" +
+				"\t\t<data url=\"https://http01.hzq.rcs.chinamobile.com:9091/Access/PF?ID=MUQzM0NERUFGM0MzRUExQTQ2M0I2NjY4Q0MyNDkyOEZFNzZGNkZFRTVDMzNGNjM1REY5MDg5OThERDZFQUY4MDExRjAyODkzQUE2QUQ3MzU2NkVFQzdERTJEQTQ0QzM2\" until=\"2020-11-22T16:08:47Z\" />\n" +
+				"\t</file-info>\n" +
+				"\t<file-info type=\"file\">\n" +
+				"\t\t<file-size>\n" +
+				"\t\t\t69617\n" +
+				"\t\t</file-size>\n" +
+				"\t\t<file-name>\n" +
+				"\t\t\t9b1e705c9feabbfa28454872cc4488e.png\n" +
+				"\t\t</file-name>\n" +
+				"\t\t<content-type>\n" +
+				"\t\t\timage/png\n" +
+				"\t\t</content-type>\n" +
+				"\t\t<data url=\"https://http01.hzq.rcs.chinamobile.com:9091/Access/PF?ID=MUQzM0NERUFGM0MzRUExQTQ2M0I2NjY4Q0MyNDkyOEZFNzZGNkZFRTVDMzNGNjM1REY5MDg5OThERDZFQUY4MDExRjAyODkzQUE2QUQ3MzU2NkVFQzdERTJEQTQ0QzM2\" until=\"2020-11-22T16:08:47Z\" />\n" +
+				"\t\t<file-exist>\n" +
+				"\t\t\t1\n" +
+				"\t\t</file-exist>\n" +
+				"\t\t<branded-url>\n" +
+				"\t\t\thttps://1/s/ebRDIvABscN.png\n" +
+				"\t\t</branded-url>\n" +
+				"\t</file-info>\n" +
+				"</file>\n";
 		return xml;
 	}
 	
@@ -401,7 +498,11 @@ public class TestFjydtH5 extends AbstractDemo{
 				"    <outboundIMMessage>\r\n" + 
 				"        <contentType>hello,contentType,pi</contentType>\r\n" + 
 				"        <conversationID>" + UUID.randomUUID().toString() + "</conversationID>\r\n" + 
-				"        <contributionID>" + UUID.randomUUID().toString() +"</contributionID>\r\n" + 
+				"        <contributionID>" + UUID.randomUUID().toString() +"</contributionID>\r\n" +
+				"		 <reportRequest>sent</reportRequest>" +
+				"		 <reportRequest>Delivered</reportRequest>" +
+				"		 <reportRequest>Displayed</reportRequest>" +
+				"		 <reportRequest>Failed</reportRequest>" +
 				"        <serviceCapability>\r\n" + 
 				"            <capabilityId>ChatbotSA</capabilityId>\r\n" + 
 				"            <version>+g.gsma.rcs.botversion=&quot;#=1&quot;</version>\r\n" + 

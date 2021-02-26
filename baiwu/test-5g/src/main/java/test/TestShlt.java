@@ -1,6 +1,5 @@
 package test;
 
-import java.io.File;
 import java.util.UUID;
 
 import org.springframework.http.HttpHeaders;
@@ -60,9 +59,9 @@ public class TestShlt extends AbstractDemo{
 //		t.revokeMessage(t.getMessageId(msg1));
 //		t.revokeMessage("fasfd");
 		//上传文件
-//		t.requestFileUpload();
+		t.requestFileUpload();
 		//下载文件
-//		t.requestDownload();
+		t.requestDownload();
 		
 		//群发消息
 //		t.requestGroupTextXml();
@@ -73,7 +72,7 @@ public class TestShlt extends AbstractDemo{
 		//状态报告、撤回通知、文件审核通知、上行消息
 	}
 	
-	FileInfo getFileInfo() {
+	FileInfo3 getFileInfo() {
 		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
 				"<file\r\n" + 
 				"    xmlns=\"urn:gsma:params:xml:ns:rcs:rcs:fthttp\"\r\n" + 
@@ -96,7 +95,7 @@ public class TestShlt extends AbstractDemo{
 	}
 	
 	String getFile() {
-		FileInfo fileInfo = getFileInfo();
+		FileInfo3 fileInfo = getFileInfo();
 		String thumbnailUrl = fileInfo.thumbnailFileUrl;
 		String thumbnailType = fileInfo.thumbnailFileType;
 		String thumbnailSize = fileInfo.thumbnailFileSize;
@@ -272,7 +271,7 @@ public class TestShlt extends AbstractDemo{
 	}
 	
 	String getDkp() {
-		FileInfo fileInfo = getFileInfo();
+		FileInfo3 fileInfo = getFileInfo();
 		String dkp = 
 				"{\r\n" +
 				"  \"message\": {\r\n" + 
@@ -323,7 +322,7 @@ public class TestShlt extends AbstractDemo{
 	}
 	
 	String getDuokp() {
-		FileInfo fileInfo1 = getFileInfo();
+		FileInfo3 fileInfo1 = getFileInfo();
 		
 		String duokp = "{" + 
 				"  \"message\": {" + 

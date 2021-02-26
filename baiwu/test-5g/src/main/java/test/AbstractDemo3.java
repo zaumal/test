@@ -1,13 +1,21 @@
 package test;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import okhttp3.*;
+import org.dom4j.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
+import util.CloseUtil;
+import util.DateUtil;
+
+import javax.net.ssl.*;
+import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -17,40 +25,10 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestTemplate;
-
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import util.CloseUtil;
-import util.DateUtil;
-import util.SHA256Util;
-
-public abstract class AbstractDemo {
+public abstract class AbstractDemo3 {
 	protected final static MediaType mediaTypeStr = MediaType.parse("application/xml");
 	protected final static MediaType MULTIPART_FORM_DATA = MediaType.parse("multipart/form-data");
 	
@@ -62,29 +40,126 @@ public abstract class AbstractDemo {
 	protected String notifyUrl;
 	
 	protected String chatbotId;
-	protected String appId;
-	protected String password;
+	protected String cspId;
+	protected String cspToken;
 	
 	protected String phone;
 	
 	protected String headerDate;
 	protected String authorization;
-	protected OkHttpClient client;
 
-	public AbstractDemo() {}
-	@SuppressWarnings("deprecation")
-	public AbstractDemo(String chatbotId,String appid,String password) {
+	protected String host = "cmic-csp-cgw.cmicmaap.com";
+
+	private OkHttpClient client = new OkHttpClient.Builder()
+			.sslSocketFactory(createSSLSocketFactory(), new TrustAllCerts())
+			.hostnameVerifier(new TrustAllHostnameVerifier())
+			.retryOnConnectionFailure(false)
+			.connectionPool(new ConnectionPool(200, 10, TimeUnit.MINUTES))
+			.connectTimeout(30, TimeUnit.SECONDS)
+			.readTimeout(300, TimeUnit.SECONDS)
+			.writeTimeout(300, TimeUnit.SECONDS)
+			.build();
+
+	public AbstractDemo3(String chatbotId,String cspId,String cspToken,String serverRoot,String fileServerRoot) {
 		this.chatbotId = chatbotId;
-		this.appId = appid;
-		this.password = password;
+		this.cspId = cspId;
+		this.cspToken = decodeStr(cspToken);//Base64解密
 		
 		this.headerDate = DateUtil.getHttpHeaderDate();
 		System.out.println("headerDate : " + headerDate);
-		this.authorization = tokenHeader(appid, password);
+		this.authorization = tokenHeader();
 		System.out.println("authorization : " + authorization);
 		System.out.println("======================================================================");
-		
-		this.client = new OkHttpClient().newBuilder().sslSocketFactory(createSSLSocketFactory()).hostnameVerifier(new TrustAllHostnameVerifier()).build();
+
+		this.sendUrl = serverRoot + "/messaging/group/v1/outbound/" + getchatbotSip() + "/requests";
+		this.revokeUrl = serverRoot + "/messaging/v1/outbound/" + getchatbotSip() + "/requests/messageId/status";
+		this.uploadUrl = fileServerRoot + "/Content";
+		this.downloadUrl = serverRoot + "/bot/v1/" + getchatbotSip() + "/medias/download";
+		this.deleteUrl = serverRoot + "/bot/v1/" + getchatbotSip() + "/medias/delete";
+	}
+
+	private SSLSocketFactory createSSLSocketFactory() {
+		SSLSocketFactory ssfFactory = null;
+
+		try {
+			SSLContext sc = SSLContext.getInstance("TLS");
+			sc.init(null, new TrustManager[] { new TrustAllCerts() }, new SecureRandom());
+
+			ssfFactory = sc.getSocketFactory();
+		} catch (Exception e) {
+		}
+
+		return ssfFactory;
+	}
+
+	private class TrustAllCerts implements X509TrustManager {
+		@Override
+		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+		}
+
+		@Override
+		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+		}
+
+		@Override
+		public X509Certificate[] getAcceptedIssuers() {
+			return new X509Certificate[0];
+		}
+	}
+
+	private class TrustAllHostnameVerifier implements HostnameVerifier {
+		@Override
+		public boolean verify(String hostname, SSLSession session) {
+			return true;
+		}
+	}
+
+	/**
+	 * SHA256加密
+	 */
+	public static String getSHA256StrJava(String str) {
+
+		MessageDigest messageDigest;
+		String encodeStr = "";
+		try {
+			messageDigest = MessageDigest.getInstance("SHA-256");
+			messageDigest.update(str.getBytes("UTF-8"));
+			encodeStr = byte2Hex(messageDigest.digest());
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return encodeStr;
+	}
+	private static String byte2Hex(byte[] bytes) {
+		StringBuffer stringBuffer = new StringBuffer();
+		String temp = null;
+		for (int i = 0; i < bytes.length; i++) {
+			temp = Integer.toHexString(bytes[i] & 0xFF);
+			if (temp.length() == 1) {
+				//1得到一位的进行补0操作
+				stringBuffer.append("0");
+			}
+			stringBuffer.append(temp);
+		}
+		return stringBuffer.toString();
+	}
+	/**
+	 * Base64解密
+	 */
+	public static String decodeStr(String pwd) {
+		Base64.Decoder decoder = Base64.getDecoder();
+		byte[] bytes = decoder.decode(pwd);
+		return new String(bytes);
+	}
+
+	/**
+	 * Base64加密
+	 */
+	public static String encodeStr(String pwd) {
+		Base64.Encoder encoder = Base64.getEncoder();
+		return encoder.encodeToString(pwd.getBytes());
 	}
 	
 	String deleteFile(String data) {
@@ -118,7 +193,9 @@ public abstract class AbstractDemo {
 					.addHeader("Authorization", authorization)
 					.addHeader("Date", headerDate)
 					.addHeader("X-3GPP-Intended-Identity", getchatbotSip())
+					.addHeader("User-Agent", "SP/" + getchatbotSip())
 					.addHeader("Terminal-type","Chatbot")
+					.addHeader("Host",this.host)
 					.get()
 					.build();
 		try {
@@ -212,7 +289,7 @@ public abstract class AbstractDemo {
         headers.add("User-Agent", "SP/" + chatbotURI);
         headers.add("Date", headerDate);
         headers.add("Authorization", authorization);
-        headers.add("Connection","close");
+//        headers.add("Connection","close");
         return new HttpEntity<>(headers);
 	}
 	
@@ -236,7 +313,7 @@ public abstract class AbstractDemo {
 	void download(InputStream is,String filename) {
 		OutputStream os = null;
 		try {
-			String filePath = "tmp" + File.separator + filename;
+			String filePath = "D:\\prodata\\github\\test\\baiwu\\test-5g\\tmp\\" + File.separator + filename;
 			
 			File file = new File(filePath);
 			
@@ -284,6 +361,7 @@ public abstract class AbstractDemo {
 					.addHeader("Authorization", authorization)
 					.addHeader("Date", headerDate)
 					.addHeader("Content-Type", "application/xml")
+					.addHeader("Host",this.host)
 					.put(body)
 					.build();
 		});
@@ -311,6 +389,7 @@ public abstract class AbstractDemo {
 				RequestBody body = RequestBody.create(x, mediaTypeStr);
 				return new Request.Builder()
 						.url(url)
+						.addHeader("Host",this.host)
 						.addHeader("Address", "+86" + phone)
 						.addHeader("Authorization", authorization)
 						.addHeader("Date", headerDate)
@@ -343,18 +422,22 @@ public abstract class AbstractDemo {
 		}
         File file = new File(filePath);
         builder.addFormDataPart("File", file.getName(), RequestBody.create(file,MediaType.parse("*/*")));
-        
+
+        builder.addFormDataPart("tid",tid);
+
         MultipartBody body = builder.build();
         
 		String response = request(null,x -> {
 				return new Request.Builder()
 						.url(url)
+						.addHeader("Host",this.host)
 						.addHeader("Content-Type", "multipart/form-data")
 //						.addHeader("NotifyUrl", notifyUrl)
 						.addHeader("Terminal-type","Chatbot")
 						.addHeader("Authorization", authorization)
 						.addHeader("Date", headerDate)
 						.addHeader("X-3GPP-Intended-Identity", getchatbotSip())
+						.addHeader("User-Agent","SP/"+getchatbotSip())
 						.addHeader("tid", tid)
 						.post(body)
 						.build();
@@ -415,53 +498,8 @@ public abstract class AbstractDemo {
 		return df.format(new Date());
 	}
 
-	private SSLSocketFactory createSSLSocketFactory() {
-		SSLSocketFactory ssfFactory = null;
-
-		try {
-			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, new TrustManager[] { new TrustAllCerts() }, new SecureRandom());
-
-			ssfFactory = sc.getSocketFactory();
-		} catch (Exception e) {
-		}
-
-		return ssfFactory;
-	}
-
-	private class TrustAllCerts implements X509TrustManager {
-		@Override
-		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-		}
-
-		@Override
-		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-		}
-
-		@Override
-		public X509Certificate[] getAcceptedIssuers() {
-			return new X509Certificate[0];
-		}
-	}
-
-	private class TrustAllHostnameVerifier implements HostnameVerifier {
-		@Override
-		public boolean verify(String hostname, SSLSession session) {
-			return true;
-		}
-	}
-
-	protected String tokenHeader(String appId, String password) {
-		String tokenHeader = null;
-		String token = SHA256Util.encode(password);
-		String text = appId.concat(":").concat(SHA256Util.encode(token + headerDate));
-		try {
-			String base64Str = Base64.getEncoder().encodeToString(text.getBytes());
-			tokenHeader = "Basic ".concat(base64Str);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return tokenHeader;
+	protected String tokenHeader() {
+		return "Basic "+encodeStr(cspId+":"+getSHA256StrJava(cspToken+headerDate)).replaceAll("\r\n", "");
 	}
 	
 	protected String getchatbotSip() {
@@ -491,7 +529,7 @@ public abstract class AbstractDemo {
 	}
 	
 	void writeFile(String filename,String text) {
-		File file = new File("file/" + filename);
+		File file = new File("D:\\prodata\\github\\test\\baiwu\\test-5g\\file\\" + filename);
 		if(!file.exists()) {
 			try {
 				file.createNewFile();
@@ -592,7 +630,7 @@ public abstract class AbstractDemo {
 	}
 }
 
-class FileInfo{
+class FileInfo3 {
 	String fileName;
 	String fileSize;
 	String fileType;
